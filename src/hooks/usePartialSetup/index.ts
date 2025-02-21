@@ -19,7 +19,7 @@ export const usePartialSetup =
       return {
         ...actionsContext,
         ...stateContext,
-        useBindedActions: () => useBindedActions(actionCreators, dispatch),
+        bindedActions: useBindedActions(actionCreators, dispatch),
       };
     };
   };
