@@ -1,26 +1,32 @@
+import {
+  ActionCreators,
+  ActionDispatch,
+  CreateBindedActions,
+} from "../../types";
 import { contextFactory } from "../../utils";
 import { useBindedActions } from "../useBindedActions";
 
-export const useSetup =
-  <State extends string>() =>
+export const usePartialSetup =
+  <State>() =>
   <
-    Dispatch extends React.Dispatch<
-      ReturnType<ActionCreators[keyof ActionCreators]>
-    >,
-    ActionCreators extends Readonly<Record<string, (...args: any[]) => any>>
+    Dispatch extends ActionDispatch,
+    AC extends ActionCreators,
+    Name extends Capitalize<string>
   >(
     dispatch: Dispatch,
-    actionCreators: ActionCreators,
-    name: Capitalize<string>
+    actionCreators: AC,
+    name: Name
   ) => {
-    const bindedActions = useBindedActions(actionCreators, dispatch);
+    const stateContext = contextFactory<State>()(name);
+    const actionsContext = contextFactory<CreateBindedActions<AC>>()("Actions");
 
-    const cfState = contextFactory<State>()(name);
-    const cfActions = contextFactory<typeof bindedActions>()("Actions");
+    return () => {
+      const bindedActions = useBindedActions(actionCreators, dispatch);
 
-    return {
-      bindedActions,
-      ...cfActions,
-      ...cfState,
+      return {
+        ...actionsContext,
+        ...stateContext,
+        bindedActions,
+      };
     };
   };

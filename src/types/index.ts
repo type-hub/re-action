@@ -1,3 +1,11 @@
+export type ActionCreators = Readonly<Record<string, (...args: any[]) => any>>;
+
+export type ActionDispatch = React.Dispatch<any>;
+
+export type CreateBindedActions<AC extends ActionCreators> = {
+  [K in keyof AC]: (...args: Parameters<AC[K]>) => void;
+};
+
 export type GetActionTypes<
   ActionsLookup extends Readonly<Record<string, (...args: any[]) => any>>
 > = {
