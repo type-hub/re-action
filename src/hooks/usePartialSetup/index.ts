@@ -16,12 +16,10 @@ export const usePartialSetup =
     const actionsContext = contextFactory<CreateBindedActions<AC>>()("Actions");
 
     return <Dispatch extends ActionDispatch>(dispatch: Dispatch) => {
-      const bindedActions = useBindedActions(actionCreators, dispatch);
-
       return {
         ...actionsContext,
         ...stateContext,
-        bindedActions,
+        useBindedActions: () => useBindedActions(actionCreators, dispatch),
       };
     };
   };
