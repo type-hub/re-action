@@ -8,19 +8,14 @@ import { useBindedActions } from "../useBindedActions";
 
 export const usePartialSetup =
   <State>() =>
-  <
-    Dispatch extends ActionDispatch,
-    AC extends ActionCreators,
-    Name extends Capitalize<string>
-  >(
-    dispatch: Dispatch,
+  <AC extends ActionCreators, Name extends Capitalize<string>>(
     actionCreators: AC,
     name: Name
   ) => {
     const stateContext = contextFactory<State>()(name);
     const actionsContext = contextFactory<CreateBindedActions<AC>>()("Actions");
 
-    return () => {
+    return <Dispatch extends ActionDispatch>(dispatch: Dispatch) => {
       const bindedActions = useBindedActions(actionCreators, dispatch);
 
       return {
