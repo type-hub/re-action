@@ -1,0 +1,41 @@
+{
+  "name": "@type-hub/re-action",
+  "version": "1.0.0",
+  "description": "useReducer() but better",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "npm run build",
+    "build": "tsc",
+    "patchAndRelease": "rm -rf ./dist && npm run build && npm version patch && npm publish --access public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/type-hub/re-action.git"
+  },
+  "keywords": [
+    "useReducer",
+    "react",
+    "bindedActions",
+    "dispatch"
+  ],
+  "author": "Wojciech Morawski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/type-hub/re-action/issues"
+  },
+  "homepage": "https://github.com/type-hub/re-action#readme",
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": false
+    }
+  },
+  "devDependencies": {
+    "react": "^18.0.0",
+    "typescript": "^5.7.3",
+    "@types/react": "^18.0.0"
+  }
+}
