@@ -1,6 +1,6 @@
 import {
   ActionCreators,
-  ActionDispatch,
+  CreateActionDispatch,
   CreateBindedActions,
 } from "../../types";
 import { contextFactory } from "../../utils";
@@ -15,7 +15,7 @@ export const usePartialSetup =
     const stateContext = contextFactory<State>()(name);
     const actionsContext = contextFactory<CreateBindedActions<AC>>()("Actions");
 
-    return <Dispatch extends ActionDispatch>(dispatch: Dispatch) => {
+    return <Dispatch extends CreateActionDispatch<AC>>(dispatch: Dispatch) => {
       return {
         ...actionsContext,
         ...stateContext,
