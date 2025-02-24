@@ -1,14 +1,20 @@
 import { useMemo } from "react";
-import { CreateBindedActions } from "../../types";
+import {
+  ActionCreators,
+  CreateActionDispatch,
+  CreateBindedActions,
+} from "../../types";
 
+// TODO: local docs/ readme?
 export const useBindedActions = <
-  AC extends Readonly<Record<string, (...args: any[]) => any>>,
-  Dispatch extends React.Dispatch<ReturnType<AC[keyof AC]>>
+  // TODO: reverse order of args might be safer
+  AC extends ActionCreators,
+  Dispatch extends CreateActionDispatch<AC>
 >(
   actionsCreators: AC,
   dispatch: Dispatch
 ) => {
-  const binded = useMemo(() => {
+  const bindedActions = useMemo(() => {
     const _keys = Object.keys(actionsCreators) as Array<keyof AC>;
 
     return _keys.reduce((acc, k) => {
@@ -19,5 +25,5 @@ export const useBindedActions = <
     }, {} as CreateBindedActions<AC>);
   }, [actionsCreators, dispatch]);
 
-  return binded;
+  return bindedActions;
 };

@@ -1,2 +1,2 @@
 export * from "./useBindedActions";
-export * from "./usePartialSetup";
+export * from "./useBindedReducer";

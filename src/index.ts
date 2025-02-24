@@ -4,19 +4,36 @@ export * from "./utils";
 
 /*
 
-#1 => make it workable lib with one hook :)
+TODO:
+- check react 16-19 usages
+- func: obj keys as AC types
+- eventify
+  - design API
+  - ensure that html node has ID
+- useSlice
+- action prefix for readability
+- how to optimize store updates
+- support async actions
+- Dev Ux
+  - redux dev tools
+  - logger in dev modes
 
-naming: Partial/ / Secondary?
+Exports
+- core
+- utils funcs
+  - contextFactory
+- types
+  - GetActionTypes
 
-- hook: single
-- hook: usePartialSetup (no useReduecr, full output)
-- hook: useFullSetup (all hooks, full output)
+DOCS:
+- philosophy: plain react wrapper, no new concepts, familiar API
+- useReducer... but better :)
+- redux usage with dev tools
+- motivation, what is wrong with useState (higher cognitive load)
 
-- Comp: context only wrapper for props:children
-- Comp: no useReducer <PartialReAction {...{ data, name }}> + useNameAction, useNameState
-- Comp: useReducer: <ReAction {...{ data, name, actions }}> + useNameAction, useNameState - how to update passed state? useEffect?
+OTHER:
+- use as redux refactor tool -> mapper for multi useState? should allow to make gradual transition to useReducer
+  should be available at least for primitives action.setOpenOn
 
-use as redux refactor tool -> mapper for multi useState? should allow to make gradual transition to useReducer
-should be available at least for primitives action.setOpenOn
 
 */
