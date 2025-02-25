@@ -6,22 +6,23 @@ import {
 } from "../../types";
 import { contextFactory } from "../../utils";
 
-export const createBindedActionsContext =
-  <State>() =>
-  <AC extends ActionCreators, Name extends Capitalize<string>>(
-    actionCreators: AC,
-    name: Name
+export const createBindedActionsContext = <
+  AC extends ActionCreators,
+  Name extends Capitalize<string>
+>(
+  actionCreators: AC,
+  name: Name
+) => {
+  const actionsContext = contextFactory<CreateBindedActions<AC>>()(name);
+
+  const useCurriedBindedActions = <Dispatch extends CreateActionDispatch<AC>>(
+    dispatch: Dispatch
   ) => {
-    const actionsContext = contextFactory<CreateBindedActions<AC>>()(name);
-
-    const useCurriedBindedActions = <Dispatch extends CreateActionDispatch<AC>>(
-      dispatch: Dispatch
-    ) => {
-      return useBindedActions(actionCreators, dispatch);
-    };
-
-    return {
-      ...actionsContext,
-      useCurriedBindedActions,
-    };
+    return useBindedActions(actionCreators, dispatch);
   };
+
+  return {
+    ...actionsContext,
+    useCurriedBindedActions,
+  };
+};
