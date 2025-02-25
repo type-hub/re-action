@@ -12,17 +12,16 @@ export const createBindedActionsContext =
     actionCreators: AC,
     name: Name
   ) => {
-    const stateContext = contextFactory<State>()(name);
-    const actionsContext = contextFactory<CreateBindedActions<AC>>()("Actions");
+    const actionsContext = contextFactory<CreateBindedActions<AC>>()(name);
 
-    // TODO: rebuild, return obj with useTyped/PreSet/BindedAction func
+    const useCurriedBindedActions = <Dispatch extends CreateActionDispatch<AC>>(
+      dispatch: Dispatch
+    ) => {
+      return useBindedActions(actionCreators, dispatch);
+    };
 
-    return <Dispatch extends CreateActionDispatch<AC>>(dispatch: Dispatch) => {
-      return {
-        ...actionsContext,
-        ...stateContext,
-        // TODO: fix later
-        bindedActions: (() => useBindedActions(actionCreators, dispatch))(),
-      };
+    return {
+      ...actionsContext,
+      useCurriedBindedActions,
     };
   };

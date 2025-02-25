@@ -16,22 +16,16 @@ export const createBindedReducerContext =
     const stateContext = contextFactory<State>()(name);
     const actionsContext = contextFactory<CreateBindedActions<AC>>()("Actions");
 
-    return (
+    const useCurriedBindedReducer = (
       initialState: State,
       reducer: Reducer<State, GetActionTypes<AC>>
     ) => {
-      const [state, bindedActions, dispatch] = useBindedReducer(
-        initialState,
-        actionCreators,
-        reducer
-      );
+      return useBindedReducer(initialState, actionCreators, reducer);
+    };
 
-      return {
-        ...actionsContext,
-        ...stateContext,
-        state,
-        bindedActions,
-        dispatch,
-      };
+    return {
+      ...stateContext,
+      ...actionsContext,
+      useCurriedBindedReducer,
     };
   };
