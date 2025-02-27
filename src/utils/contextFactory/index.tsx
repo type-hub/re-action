@@ -1,9 +1,8 @@
 import React, { createContext, memo, useContext } from "react";
+import { DisplayName } from "../../types";
 
 export function contextFactory<ContextValue>() {
-  return function <DisplayName extends Capitalize<string>>(
-    displayName: DisplayName
-  ) {
+  return function <DN extends DisplayName>(displayName: DN) {
     const ReActionContext = createContext<ContextValue | undefined>(undefined);
     ReActionContext.displayName = displayName;
 
@@ -17,7 +16,7 @@ export function contextFactory<ContextValue>() {
       }
 
       return value;
-    } // + debug name
+    } // TODO: add debug name
 
     type ReActionProviderProps = {
       value: ContextValue;
@@ -35,12 +34,12 @@ export function contextFactory<ContextValue>() {
     ReActionProvider.displayName = `${displayName}Provider`;
 
     return {
-      [`use${displayName}State` as const]: useContextValue,
+      [`use${displayName}` as const]: useContextValue,
       [`${displayName}Provider`]: ReActionProvider,
     } as {
-      [K in `use${DisplayName}State`]: typeof useContextValue;
+      [K in `use${DN}`]: typeof useContextValue;
     } & {
-      [K in `${DisplayName}Provider`]: typeof ReActionProvider;
+      [K in `${DN}Provider`]: typeof ReActionProvider;
     };
   };
 }

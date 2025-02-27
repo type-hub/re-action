@@ -1,41 +1,36 @@
-// support
-// - for payload
-// - and for simple functions
+import { CreateAction, CreateActionCreator, Func } from "../../types";
+import { keys } from "../keys";
 
-import { CreateAction, CreateActionCreators, Func } from "../../types";
-
-function keys<T extends Record<string, any>>(o: T): (keyof T & string)[] {
-  return Object.keys(o);
-}
-
-// VID: better way to create actions (redux, useReducer)
 const setup = <Obj extends Record<string, Func>>(o: Obj) => {
   const _keys = keys(o);
 
-  return _keys.reduce((acc, key) => {
-    acc[key] = <T extends Parameters<Obj[typeof key]>>(
-      ...payload: T
-    ): CreateAction<T, typeof key> => ({
-      payload: o[key](...payload),
-      type: key,
-    });
+  return _keys.reduce(
+    (acc, key) => {
+      acc[key] = <T extends Parameters<Obj[typeof key]>>(
+        ...payload: T
+      ): CreateAction<T, typeof key> => ({
+        payload: o[key](...payload),
+        type: key,
+      });
 
-    return acc;
-  }, {} as CreateActionCreators<Obj>);
+      return acc;
+    },
+    {} as {
+      // TODO: support generic output ReturnType<typeof action<"test">>
+      [K in keyof Obj]: CreateActionCreator<Obj[K], K & string>;
+    }
+  );
 };
+
+// TESTS
 
 const id = <T>(value: T): T => value;
 
-/*
+// TODO: rethink, action should build payload (use ramda chains)
 
-- action should build payload (use ramda chains)
--
-
-*/
-
-// VID: pre typed generic functions
-export const x = setup({
+const x = setup({
   a: id,
+  // VID: pre typed generic functions
   aa: id<string>,
   b: (a: number) => `a-${a}`,
   // b: <T extends number>(a: T): `a-${T}` => `a-${a}`,
@@ -43,10 +38,9 @@ export const x = setup({
   // ramda chain
 });
 
-// TS read const but not use it as generic
 const f = x.aa("1");
 //    ^?
-const g = x.b("s");
+const g = x.b(2);
 //    ^?
 const e = x.b(1);
 //    ^?

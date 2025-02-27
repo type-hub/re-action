@@ -1,3 +1,5 @@
+export type DisplayName = Capitalize<string>;
+
 export type Action = { payload: any; type: string };
 export type CreateAction<Payload, Type extends string> = {
   payload: Payload;

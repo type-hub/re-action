@@ -4,6 +4,7 @@ import {
   CreateActionDispatch,
   CreateBindedActions,
 } from "../../types";
+import { keys } from "../../utils";
 
 // TODO: local docs/ readme?
 export const useBindedActions = <
@@ -15,10 +16,10 @@ export const useBindedActions = <
   dispatch: Dispatch
 ) => {
   const bindedActions = useMemo(() => {
-    const _keys = Object.keys(actionsCreators) as Array<keyof AC>;
+    const _keys = keys(actionsCreators);
 
     return _keys.reduce((acc, k) => {
-      acc[k] = (...args: Parameters<AC[typeof k]>) => {
+      acc[k] = (...args: Parameters<AC[typeof k]>): void => {
         dispatch(actionsCreators[k](...args));
       };
       return acc;

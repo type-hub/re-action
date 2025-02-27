@@ -20,5 +20,6 @@ export const useBindedReducer = <InitialState, AC extends ActionCreators>(
   const [state, dispatch] = useReducer(reducer, initialState);
   const bindedActions = useBindedActions(actionsCreators, dispatch);
 
+  // TODO: dispatch is here due to incremental refactor usage
   return [state, bindedActions, dispatch];
 };

@@ -1,18 +1,15 @@
-import { createBindedReducerContext } from "../../creators/createBindedReducerContext";
+// import React, { Reducer } from "react";
 
-type GenericProps<T> = {
-  children: any;
-  useTypedBindedActions: ReturnType<
-    ReturnType<typeof createBindedReducerContext>
-  >;
-};
+import { createBindedReducerContext } from "../../creators/createBindedReducerContext";
+import { ActionCreators } from "../../types";
 
 export const TODO = "TODO: solve types from return to dispatch";
 
-// export const BindedActionsProvider = <T extends {}>({
-//   children,
-//   useTypedBindedActions,
-// }: GenericProps<T>) => {
-//   const x = useTypedBindedActions;
-//   return <Provider>{children}</Provider>;
-// };
+const create =
+  <State,>() =>
+  <AC extends ActionCreators, Name extends Capitalize<string>>(
+    actionCreators: AC,
+    name: Name
+  ) => {
+    createBindedReducerContext<State>()(actionCreators, name);
+  };

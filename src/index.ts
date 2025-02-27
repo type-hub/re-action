@@ -1,16 +1,12 @@
 export * from "./creators";
 export * from "./hooks";
 export * from "./types";
-// export * from "./utils";
-
-// final exports
-export * from "./utils/contextFactory";
+export * from "./utils";
 
 /*
 
 TODO:
 - check react 16-19 usages
-- func: obj keys as AC types
 - eventify
   - design API
   - ensure that html node has ID
