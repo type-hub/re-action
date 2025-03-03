@@ -1,18 +1,30 @@
 import React, { createContext, memo, useContext } from "react";
-import { DisplayName } from "../../types";
+import { MaybeDisplayName } from "../../types";
+import { ResolveDisplayName, resolveDisplayName } from "../resolveDisplayName";
+
+export type CreateContextFactory<ContextValue, DN extends MaybeDisplayName> = {
+  [K in `use${ResolveDisplayName<DN>}`]: () => ContextValue;
+} & {
+  [K in `${ResolveDisplayName<DN>}Provider`]: React.MemoExoticComponent<
+    (props: { value: ContextValue; children: React.ReactNode }) => JSX.Element
+  >;
+};
 
 export function contextFactory<ContextValue>() {
-  return function <DN extends DisplayName>(displayName: DN) {
+  //
+  return function <DN extends MaybeDisplayName>(
+    displayName: DN = "Context" as DN
+  ): CreateContextFactory<ContextValue, DN> {
+    const dn = resolveDisplayName(displayName);
+
     const ReActionContext = createContext<ContextValue | undefined>(undefined);
-    ReActionContext.displayName = displayName;
+    ReActionContext.displayName = dn;
 
     function useContextValue(): ContextValue {
       const value = useContext(ReActionContext);
 
       if (value === undefined) {
-        throw new Error(
-          `${displayName} must be used within a ${displayName}Provider`
-        );
+        throw new Error(`${dn} must be used within a ${dn}Provider`);
       }
 
       return value;
@@ -31,15 +43,18 @@ export function contextFactory<ContextValue>() {
       )
     );
 
-    ReActionProvider.displayName = `${displayName}Provider`;
+    ReActionProvider.displayName = `${dn}Provider`;
 
     return {
-      [`use${displayName}` as const]: useContextValue,
-      [`${displayName}Provider`]: ReActionProvider,
-    } as {
-      [K in `use${DN}`]: typeof useContextValue;
-    } & {
-      [K in `${DN}Provider`]: typeof ReActionProvider;
-    };
+      [`use${dn}`]: useContextValue,
+      [`${dn}Provider`]: ReActionProvider,
+    } as CreateContextFactory<ContextValue, DN>;
   };
 }
+
+//
+
+const a = contextFactory<number>()("User");
+a.UserProvider;
+const b = contextFactory<number>()();
+b.ContextProvider;

@@ -6,22 +6,23 @@ import {
 } from "../../types";
 import { keys } from "../../utils";
 
-// TODO: local docs/ readme?
 export const useBindedActions = <
-  // TODO: reverse order of args might be safer
   AC extends ActionCreators,
-  Dispatch extends CreateActionDispatch<AC>
+  AD extends CreateActionDispatch<AC>
 >(
   actionsCreators: AC,
-  dispatch: Dispatch
-) => {
+  dispatch: AD
+): CreateBindedActions<AC> => {
   const bindedActions = useMemo(() => {
     const _keys = keys(actionsCreators);
 
     return _keys.reduce((acc, k) => {
       acc[k] = (...args: Parameters<AC[typeof k]>): void => {
-        dispatch(actionsCreators[k](...args));
+        const action = actionsCreators[k](...args) as ReturnType<AC[typeof k]>;
+
+        dispatch(action);
       };
+
       return acc;
     }, {} as CreateBindedActions<AC>);
   }, [actionsCreators, dispatch]);

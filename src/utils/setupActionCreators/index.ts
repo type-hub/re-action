@@ -1,25 +1,21 @@
-import { CreateAction, CreateActionCreator, Func } from "../../types";
+import { CreateAction, CreateActionCreators, Func } from "../../types";
 import { keys } from "../keys";
 
-const setup = <Obj extends Record<string, Func>>(o: Obj) => {
+const setup = <Obj extends Record<string, Func>>(
+  o: Obj
+): CreateActionCreators<Obj> => {
   const _keys = keys(o);
 
-  return _keys.reduce(
-    (acc, key) => {
-      acc[key] = <T extends Parameters<Obj[typeof key]>>(
-        ...payload: T
-      ): CreateAction<T, typeof key> => ({
-        payload: o[key](...payload),
-        type: key,
-      });
+  return _keys.reduce((acc, key) => {
+    acc[key] = <T extends Parameters<Obj[typeof key]>>(
+      ...payload: T
+    ): CreateAction<T, typeof key> => ({
+      payload: o[key](...payload),
+      type: key,
+    });
 
-      return acc;
-    },
-    {} as {
-      // TODO: support generic output ReturnType<typeof action<"test">>
-      [K in keyof Obj]: CreateActionCreator<Obj[K], K & string>;
-    }
-  );
+    return acc;
+  }, {} as CreateActionCreators<Obj>);
 };
 
 // TESTS

@@ -17,6 +17,7 @@ TODO:
 - Dev Ux
   - redux dev tools
   - logger in dev modes
+-  TODO: local docs/ readme?
 
 Exports
 - core

@@ -1,2 +1,2 @@
-export * from "./createBindedActionsContext";
-export * from "./createBindedReducerContext";
+export * from "./setupActions";
+export * from "./setupReducer";
