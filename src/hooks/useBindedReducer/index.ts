@@ -1,34 +1,50 @@
 // KILL
-import { Reducer, useReducer } from "react";
+import { useReducer } from "react";
+import { testActions, testInitState, testReducer } from "../../data";
 import {
+  ACTION,
   ActionCreators,
   CreateActionDispatch,
   CreateBindedActions,
-  CreateReducer,
-  GetActionTypes,
+  Dispatch,
+  Reducer,
 } from "../../types";
 import { useBindedActions } from "../useBindedActions";
 
-export type CreateBindedReducer<State, AC extends ActionCreators> = (
-  initialState: State,
-  reducer: CreateReducer<State, AC>
-) => [State, CreateBindedActions<AC>, CreateActionDispatch<AC>];
-
-export const useBindedReducer = <State, AC extends ActionCreators>(
-  initialState: State,
+export type CreateBindedReducerFunc<
+  S,
+  A extends ACTION,
+  AC extends ActionCreators<A>
+> = (
+  reducer: Reducer<S, A>,
   actionsCreators: AC,
-  reducer: Reducer<State, GetActionTypes<AC>>
-): [
-  //
-  State,
-  CreateBindedActions<AC>,
-  CreateActionDispatch<AC>
-] => {
+  initialState: S
+) => [S, CreateBindedActions<AC>, CreateActionDispatch<AC>];
+
+export const useBindedReducer = <
+  S,
+  A extends ACTION,
+  AC extends ActionCreators<A>
+>(
+  reducer: Reducer<S, A>,
+  actionsCreators: AC,
+  initialState: S
+): [S, CreateBindedActions<AC>, Dispatch<A>] => {
+  // ) => {
+  // ): CreateBindedReducer<Reducer, AC, State> => {
   // TODO: support init func
   const [state, dispatch] = useReducer(reducer, initialState);
-  const bindedActions = useBindedActions(actionsCreators, dispatch);
+  const bindedActions = useBindedActions(
+    dispatch as unknown as Dispatch<ACTION>,
+    actionsCreators
+  );
 
-  // TODO: dispatch is here due to incremental refactor usage
+  // INFO: dispatch is here due to incremental refactor usage
   // TODO: why array?
   return [state, bindedActions, dispatch];
 };
+
+//
+
+// const [state, bindedActions, dispatch] = useBindedReducer(testReducer, testActions, testInitState);
+const zzzzzz = useBindedReducer(testReducer, testActions, testInitState);

@@ -1,11 +1,12 @@
-import { Reducer } from "react";
-import { testActions, TestState } from "../../data";
-import { CreateBindedReducer, useBindedReducer } from "../../hooks";
+// import { Reducer } from "react";
+import { testActions, testReducer } from "../../data";
+import { CreateBindedReducerFunc, useBindedReducer } from "../../hooks";
 import {
+  ACTION,
   ActionCreators,
   CreateBindedActions,
-  GetActionTypes,
   MaybeDisplayName,
+  Reducer,
 } from "../../types";
 import {
   contextFactory,
@@ -16,47 +17,53 @@ import {
 
 type SetupReducer<
   State,
-  AC extends ActionCreators,
+  Actions extends ACTION,
+  AC extends ActionCreators<Actions>,
   DN extends MaybeDisplayName
 > = CreateContextFactory<State, Capitalize<`${ResolveDisplayName<DN>}State`>> &
   CreateContextFactory<
     CreateBindedActions<AC>,
     Capitalize<`${ResolveDisplayName<DN>}Actions`>
   > & {
-    [K in `use${ResolveDisplayName<DN>}Reducer`]: CreateBindedReducer<
-      State,
-      AC
-    >;
+    [K in `use${ResolveDisplayName<DN>}Reducer`]: (
+      initialState: State
+    ) => CreateBindedReducerFunc<State, Actions, AC>;
   };
 
-export const setupReducer =
-  <State>() =>
-  <AC extends ActionCreators, DN extends MaybeDisplayName>(
-    actionCreators: AC,
-    displayName?: DN
-  ): SetupReducer<State, AC, DN> => {
-    const dn = resolveDisplayName(displayName);
+export const setupUseReducer = <
+  S,
+  A extends ACTION,
+  AC extends ActionCreators<A>,
+  DN extends MaybeDisplayName
+>(
+  reducer: Reducer<S, A>,
+  actionCreators: AC,
+  displayName?: DN
+): SetupReducer<S, A, AC, DN> => {
+  const dn = resolveDisplayName(displayName);
 
-    const stateContext = contextFactory<State>()(
-      `${dn}State` as Capitalize<`${DN}State`>
-    );
-    const actionsContext = contextFactory<CreateBindedActions<AC>>()(
-      `${dn}Actions` as Capitalize<`${DN}Actions`>
-    );
+  const stateContext = contextFactory<S>()(
+    // TODO: why DN and not dn?
+    `${dn}State` as Capitalize<`${DN}State`>
+  );
+  const actionsContext = contextFactory<CreateBindedActions<AC>>()(
+    `${dn}Actions` as Capitalize<`${DN}Actions`>
+  );
 
-    const useCurriedBindedReducer = (
-      initialState: State,
-      reducer: Reducer<State, GetActionTypes<AC>>
-    ) => useBindedReducer(initialState, actionCreators, reducer);
+  const useCurriedBindedReducer = (initialState: S) =>
+    useBindedReducer(reducer, actionCreators, initialState);
 
-    return {
-      [`use${dn}Reducer`]: useCurriedBindedReducer,
-      ...stateContext,
-      ...actionsContext,
-    } as SetupReducer<State, AC, DN>;
-  };
+  return {
+    [`use${dn}Reducer`]: useCurriedBindedReducer,
+    ...stateContext,
+    ...actionsContext,
+  } as SetupReducer<S, A, AC, DN>;
+};
 
 // ------
 
-const counterA = setupReducer<TestState>()(testActions, "Counter");
-const counterB = setupReducer<TestState>()(testActions);
+// const [state, bindedActions, dispatch] = setupUseReducer(testReducer, testActions, "Counter");
+const xxxxxx = setupUseReducer(testReducer, testActions, "Counter");
+const counterB = setupUseReducer(testReducer, testActions);
+
+// counterA.

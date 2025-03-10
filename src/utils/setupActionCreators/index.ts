@@ -1,21 +1,29 @@
-import { CreateAction, CreateActionCreators, Func } from "../../types";
+import {
+  CreateAction,
+  CreateActionCreatorsFromFnLookUp,
+  Func,
+} from "../../types";
 import { keys } from "../keys";
 
 const setup = <Obj extends Record<string, Func>>(
   o: Obj
-): CreateActionCreators<Obj> => {
+): CreateActionCreatorsFromFnLookUp<Obj> => {
   const _keys = keys(o);
 
   return _keys.reduce((acc, key) => {
-    acc[key] = <T extends Parameters<Obj[typeof key]>>(
-      ...payload: T
-    ): CreateAction<T, typeof key> => ({
+    acc[key] = <
+      //
+      In extends Parameters<Obj[typeof key]>,
+      Out extends ReturnType<Obj[typeof key]>
+    >(
+      ...payload: In
+    ): CreateAction<Out, typeof key> => ({
       payload: o[key](...payload),
       type: key,
     });
 
     return acc;
-  }, {} as CreateActionCreators<Obj>);
+  }, {} as CreateActionCreatorsFromFnLookUp<Obj>);
 };
 
 // TESTS
@@ -30,7 +38,7 @@ const x = setup({
   aa: id<string>,
   b: (a: number) => `a-${a}`,
   // b: <T extends number>(a: T): `a-${T}` => `a-${a}`,
-  c: () => ({ a: 1 }),
+  c: () => ({ a: 1 as const }),
   // ramda chain
 });
 

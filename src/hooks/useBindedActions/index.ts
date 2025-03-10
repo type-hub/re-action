@@ -1,17 +1,18 @@
 import { useMemo } from "react";
 import {
+  ACTION,
   ActionCreators,
-  CreateActionDispatch,
   CreateBindedActions,
+  Dispatch,
 } from "../../types";
 import { keys } from "../../utils";
 
 export const useBindedActions = <
-  AC extends ActionCreators,
-  AD extends CreateActionDispatch<AC>
+  A extends ACTION,
+  AC extends ActionCreators<A>
 >(
-  actionsCreators: AC,
-  dispatch: AD
+  dispatch: Dispatch<A>,
+  actionsCreators: AC
 ): CreateBindedActions<AC> => {
   const bindedActions = useMemo(() => {
     const _keys = keys(actionsCreators);

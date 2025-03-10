@@ -4,10 +4,20 @@ export type TestState = {
   count: number;
 };
 
-export const testActions = {
-  increment: (amount: number) => ({ type: "increment", payload: amount }),
-  decrement: (amount: string) => ({ type: "decrement", payload: amount }),
+export const testInitState = {
+  count: 0,
 };
+
+export const testActions = {
+  increment: (amount: number) => ({
+    type: "increment" as const,
+    payload: amount,
+  }),
+  decrement: (amount: string) => ({
+    type: "decrement" as const,
+    payload: amount,
+  }),
+} as const;
 
 export const testReducer = (
   state: TestState,
