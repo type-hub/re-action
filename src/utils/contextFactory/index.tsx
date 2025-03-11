@@ -51,8 +51,8 @@ export function contextFactory<
 
 //
 
-const a = contextFactory<number, "User">("User");
-a.UserProvider;
-const b = contextFactory<number>();
-b.ContextProvider;
-// b.ContextXProvider;
+// const a = contextFactory<number, "User">("User");
+// a.UserProvider;
+// const b = contextFactory<number>();
+// b.ContextProvider;
+// // b.ContextXProvider;

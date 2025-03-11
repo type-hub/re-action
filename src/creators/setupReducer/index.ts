@@ -1,5 +1,4 @@
 // import { Reducer } from "react";
-import { testActions, testReducer } from "../../data";
 import { CreateBindedReducerFunc, useBindedReducer } from "../../hooks";
 import {
   ACTION,
@@ -63,15 +62,15 @@ export const setupUseReducer = <
 
 // ------
 
-// const [state, bindedActions, dispatch] = setupUseReducer(testReducer, testActions, "Counter");
-const counterA = setupUseReducer(testReducer, testActions, "Counter");
-const counterB = setupUseReducer(testReducer, testActions);
+// // const [state, bindedActions, dispatch] = setupUseReducer(testReducer, testActions, "Counter");
+// const counterA = setupUseReducer(testReducer, testActions, "Counter");
+// const counterB = setupUseReducer(testReducer, testActions);
 
-counterA.useCounterState;
-counterB.useContextState;
-// counterB.
+// counterA.useCounterState;
+// counterB.useContextState;
+// // counterB.
 
-// counterB.useAAAAAState();
-// counterB.useActions();
-// counterB.useCounterReducer({ count: 0 });
-// counterB.useCounterReducer({ count: 0 });
+// // counterB.useAAAAAState();
+// // counterB.useActions();
+// // counterB.useCounterReducer({ count: 0 });
+// // counterB.useCounterReducer({ count: 0 });

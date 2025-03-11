@@ -1,7 +1,6 @@
 import React from "react";
 
 import { setupUseReducer } from "../../creators/setupReducer";
-import { testActions, testReducer } from "../../data";
 import { ACTION, ActionCreators, DISPLAY_NAME, Reducer } from "../../types";
 import { resolveDisplayName } from "../../utils";
 
@@ -60,6 +59,6 @@ export const create = <
   };
 };
 
-const x = create(testReducer, testActions, "XXX");
+// const x = create(testReducer, testActions, "XXX");
 
 // const z = x.useContextActions();

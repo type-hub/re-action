@@ -1,6 +1,5 @@
 // KILL
 import { useReducer } from "react";
-import { testActions, testInitState, testReducer } from "../../data";
 import {
   ACTION,
   ActionCreators,
@@ -47,4 +46,4 @@ export const useBindedReducer = <
 //
 
 // const [state, bindedActions, dispatch] = useBindedReducer(testReducer, testActions, testInitState);
-const zzzzzz = useBindedReducer(testReducer, testActions, testInitState);
+// const zzzzzz = useBindedReducer(testReducer, testActions, testInitState);

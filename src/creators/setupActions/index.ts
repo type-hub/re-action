@@ -1,4 +1,3 @@
-import { testActions } from "../../data";
 import { useBindedActions } from "../../hooks";
 import {
   ACTION,
@@ -49,10 +48,10 @@ export const setupActions = <
 
 // ------
 
-declare const _dispatch: Dispatch<GetActionTypes<typeof testActions>>;
+// declare const _dispatch: Dispatch<GetActionTypes<typeof testActions>>;
 
-const x = setupActions(testActions, "User");
-const a = x.useUserActions(_dispatch);
+// const x = setupActions(testActions, "User");
+// const a = x.useUserActions(_dispatch);
 
-const xx = setupActions(testActions);
-const aa = xx.useContextActions(_dispatch);
+// const xx = setupActions(testActions);
+// const aa = xx.useContextActions(_dispatch);
