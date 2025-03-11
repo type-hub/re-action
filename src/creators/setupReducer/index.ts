@@ -5,7 +5,7 @@ import {
   ACTION,
   ActionCreators,
   CreateBindedActions,
-  MaybeDisplayName,
+  DISPLAY_NAME,
   Reducer,
 } from "../../types";
 import {
@@ -19,7 +19,7 @@ type SetupReducer<
   State,
   Actions extends ACTION,
   AC extends ActionCreators<Actions>,
-  DN extends MaybeDisplayName
+  DN extends string
 > = CreateContextFactory<State, Capitalize<`${ResolveDisplayName<DN>}State`>> &
   CreateContextFactory<
     CreateBindedActions<AC>,
@@ -27,14 +27,14 @@ type SetupReducer<
   > & {
     [K in `use${ResolveDisplayName<DN>}Reducer`]: (
       initialState: State
-    ) => CreateBindedReducerFunc<State, Actions, AC>;
+    ) => ReturnType<CreateBindedReducerFunc<State, Actions, AC>>;
   };
 
 export const setupUseReducer = <
   S,
   A extends ACTION,
   AC extends ActionCreators<A>,
-  DN extends MaybeDisplayName
+  DN extends DISPLAY_NAME
 >(
   reducer: Reducer<S, A>,
   actionCreators: AC,
@@ -42,13 +42,14 @@ export const setupUseReducer = <
 ): SetupReducer<S, A, AC, DN> => {
   const dn = resolveDisplayName(displayName);
 
-  const stateContext = contextFactory<S>()(
-    // TODO: why DN and not dn?
-    `${dn}State` as Capitalize<`${DN}State`>
-  );
-  const actionsContext = contextFactory<CreateBindedActions<AC>>()(
-    `${dn}Actions` as Capitalize<`${DN}Actions`>
-  );
+  const stateDn: `${typeof dn}State` = `${dn}State`; // TODO: fix capitalization
+  const stateContext = contextFactory<S, typeof stateDn>(stateDn);
+
+  const actionDn: `${typeof dn}Actions` = `${dn}Actions`;
+  const actionsContext = contextFactory<
+    CreateBindedActions<AC>,
+    typeof actionDn
+  >(actionDn);
 
   const useCurriedBindedReducer = (initialState: S) =>
     useBindedReducer(reducer, actionCreators, initialState);
@@ -63,7 +64,14 @@ export const setupUseReducer = <
 // ------
 
 // const [state, bindedActions, dispatch] = setupUseReducer(testReducer, testActions, "Counter");
-const xxxxxx = setupUseReducer(testReducer, testActions, "Counter");
+const counterA = setupUseReducer(testReducer, testActions, "Counter");
 const counterB = setupUseReducer(testReducer, testActions);
 
-// counterA.
+counterA.useCounterState;
+counterB.useContextState;
+// counterB.
+
+// counterB.useAAAAAState();
+// counterB.useActions();
+// counterB.useCounterReducer({ count: 0 });
+// counterB.useCounterReducer({ count: 0 });

@@ -1,6 +1,7 @@
 // ==== General =============================================================
 
-export type Func = (...args: any[]) => any;
+export type FUNC = (...args: any[]) => any;
+export type FUNC_LOOKUP = Record<string, FUNC>;
 
 // ==== Actions ============================================================
 
@@ -18,16 +19,15 @@ export type ActionCreators<A extends ACTION> = Readonly<
 
 type CreateActionCreatorFromFn<
   //
-  Fn extends Func,
+  Fn extends FUNC,
   Type extends string
 > = <Args extends Parameters<Fn>>(
   ...args: Args
 ) => CreateAction<ReturnType<Fn>, Type>;
 
-export type CreateActionCreatorsFromFnLookUp<Obj extends Record<string, Func>> =
-  {
-    [K in keyof Obj]: CreateActionCreatorFromFn<Obj[K], K & string>;
-  };
+export type CreateActionCreatorsFromFnLookUp<Obj extends FUNC_LOOKUP> = {
+  [K in keyof Obj]: CreateActionCreatorFromFn<Obj[K], K & string>;
+};
 
 // ==== Binded Actions ========================================================
 
@@ -37,8 +37,7 @@ export type CreateBindedActions<AC extends ActionCreators<ACTION>> = {
 
 // ==== DisplayName ===========================================================
 
-export type DisplayName = Capitalize<string>;
-export type MaybeDisplayName = Capitalize<string> | undefined;
+export type DISPLAY_NAME = string;
 
 // ==== Reducer ================================================================
 

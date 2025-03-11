@@ -1,13 +1,19 @@
-const Context = "Context" as const;
+import { DISPLAY_NAME } from "../../types";
 
-export type ResolveDisplayName<T> = T extends string ? T : typeof Context;
+const ContextDisplayName = "Context" as const;
 
-export const resolveDisplayName = <T extends string | undefined = undefined>(
-  s?: T
-): ResolveDisplayName<T> => {
-  if (s) {
-    return s as any;
+export type ResolveDisplayName<T> = [T] extends [string]
+  ? [string] extends [T]
+    ? typeof ContextDisplayName
+    : T
+  : typeof ContextDisplayName;
+
+export const resolveDisplayName = <DN extends DISPLAY_NAME | undefined>(
+  displayName: DN
+): ResolveDisplayName<DN> => {
+  if (displayName) {
+    return displayName as ResolveDisplayName<DN>;
   } else {
-    return Context as any;
+    return ContextDisplayName as ResolveDisplayName<DN>;
   }
 };

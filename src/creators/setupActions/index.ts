@@ -6,16 +6,23 @@ import {
   CreateActionDispatch,
   CreateBindedActions,
   Dispatch,
-  DisplayName,
+  DISPLAY_NAME,
   GetActionTypes,
 } from "../../types";
-import { contextFactory, CreateContextFactory } from "../../utils";
+import {
+  contextFactory,
+  CreateContextFactory,
+  ResolveDisplayName,
+  resolveDisplayName,
+} from "../../utils";
 
 type SetupActions<
   AC extends ActionCreators<ACTION>,
-  DN extends DisplayName
-> = CreateContextFactory<CreateBindedActions<AC>, DN> & {
-  [K in `use${DN}Actions`]: <ActionsDispatch extends CreateActionDispatch<AC>>(
+  DN extends DISPLAY_NAME | undefined
+> = CreateContextFactory<CreateBindedActions<AC>, ResolveDisplayName<DN>> & {
+  [K in `use${ResolveDisplayName<DN>}Actions`]: <
+    ActionsDispatch extends CreateActionDispatch<AC>
+  >(
     dispatch: ActionsDispatch
   ) => CreateBindedActions<AC>;
 };
@@ -23,21 +30,20 @@ type SetupActions<
 export const setupActions = <
   //
   AC extends ActionCreators<ACTION>,
-  DN extends DisplayName
+  DN extends DISPLAY_NAME
 >(
   actionCreators: AC,
-  displayName: DN
+  displayName?: DN
 ): SetupActions<AC, DN> => {
-  const actionsContext = contextFactory<CreateBindedActions<AC>>()(displayName);
+  const dn = resolveDisplayName(displayName);
+  const actionsContext = contextFactory<CreateBindedActions<AC>, typeof dn>(dn);
 
-  type A = GetActionTypes<AC>;
-
-  const useCurriedBindedActions = (dispatch: Dispatch<A>) =>
+  const useCurriedBindedActions = (dispatch: Dispatch<GetActionTypes<AC>>) =>
     useBindedActions(dispatch as unknown as Dispatch<ACTION>, actionCreators);
 
   return {
     ...actionsContext,
-    [`use${displayName}Actions`]: useCurriedBindedActions,
+    [`use${dn}Actions`]: useCurriedBindedActions,
   } as SetupActions<AC, DN>;
 };
 
@@ -47,3 +53,6 @@ declare const _dispatch: Dispatch<GetActionTypes<typeof testActions>>;
 
 const x = setupActions(testActions, "User");
 const a = x.useUserActions(_dispatch);
+
+const xx = setupActions(testActions);
+const aa = xx.useContextActions(_dispatch);

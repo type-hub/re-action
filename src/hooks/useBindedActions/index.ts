@@ -5,7 +5,7 @@ import {
   CreateBindedActions,
   Dispatch,
 } from "../../types";
-import { keys } from "../../utils";
+import { getKeys } from "../../utils";
 
 export const useBindedActions = <
   A extends ACTION,
@@ -15,12 +15,11 @@ export const useBindedActions = <
   actionsCreators: AC
 ): CreateBindedActions<AC> => {
   const bindedActions = useMemo(() => {
-    const _keys = keys(actionsCreators);
+    const _keys = getKeys(actionsCreators);
 
     return _keys.reduce((acc, k) => {
       acc[k] = (...args: Parameters<AC[typeof k]>): void => {
-        const action = actionsCreators[k](...args) as ReturnType<AC[typeof k]>;
-
+        const action = actionsCreators[k](...args);
         dispatch(action);
       };
 

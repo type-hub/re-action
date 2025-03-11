@@ -1,38 +1,40 @@
 import {
   CreateAction,
   CreateActionCreatorsFromFnLookUp,
-  Func,
+  FUNC_LOOKUP,
 } from "../../types";
-import { keys } from "../keys";
+import { getKeys } from "../getKeys";
 
-const setup = <Obj extends Record<string, Func>>(
-  o: Obj
-): CreateActionCreatorsFromFnLookUp<Obj> => {
-  const _keys = keys(o);
+// TODO: js docs?
+
+const setupActionsCreators = <FL extends FUNC_LOOKUP>(
+  funcLookup: FL
+): CreateActionCreatorsFromFnLookUp<FL> => {
+  const _keys = getKeys(funcLookup);
 
   return _keys.reduce((acc, key) => {
     acc[key] = <
       //
-      In extends Parameters<Obj[typeof key]>,
-      Out extends ReturnType<Obj[typeof key]>
+      In extends Parameters<FL[typeof key]>,
+      Out extends ReturnType<FL[typeof key]>
     >(
       ...payload: In
     ): CreateAction<Out, typeof key> => ({
-      payload: o[key](...payload),
+      payload: funcLookup[key](...payload),
       type: key,
     });
 
     return acc;
-  }, {} as CreateActionCreatorsFromFnLookUp<Obj>);
+  }, {} as CreateActionCreatorsFromFnLookUp<FL>);
 };
 
-// TESTS
+// --- TESTS --------------------------------------------------------
 
 const id = <T>(value: T): T => value;
 
 // TODO: rethink, action should build payload (use ramda chains)
 
-const x = setup({
+const x = setupActionsCreators({
   a: id,
   // VID: pre typed generic functions
   aa: id<string>,
