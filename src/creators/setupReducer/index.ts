@@ -14,20 +14,39 @@ import {
   ResolveDisplayName,
 } from "../../utils";
 
+type StateContext<State, DN extends string> = CreateContextFactory<
+  State,
+  `${ResolveDisplayName<DN>}State`
+>;
+
+type ActionContext<
+  Actions extends ACTION,
+  AC extends ActionCreators<Actions>,
+  DN extends string
+> = CreateContextFactory<
+  CreateBindedActions<AC>,
+  `${ResolveDisplayName<DN>}Actions`
+>;
+
+type HookContext<
+  State,
+  Actions extends ACTION,
+  AC extends ActionCreators<Actions>,
+  DN extends string
+> = {
+  [K in `use${ResolveDisplayName<DN>}Reducer`]: (
+    initialState: State
+  ) => ReturnType<CreateBindedReducerFunc<State, Actions, AC>>;
+};
+
 type SetupReducer<
   State,
   Actions extends ACTION,
   AC extends ActionCreators<Actions>,
   DN extends string
-> = CreateContextFactory<State, Capitalize<`${ResolveDisplayName<DN>}State`>> &
-  CreateContextFactory<
-    CreateBindedActions<AC>,
-    Capitalize<`${ResolveDisplayName<DN>}Actions`>
-  > & {
-    [K in `use${ResolveDisplayName<DN>}Reducer`]: (
-      initialState: State
-    ) => ReturnType<CreateBindedReducerFunc<State, Actions, AC>>;
-  };
+> = StateContext<State, DN> &
+  ActionContext<Actions, AC, DN> &
+  HookContext<State, Actions, AC, DN>;
 
 export const setupUseReducer = <
   S,

@@ -1,8 +1,14 @@
 import React from "react";
 
 import { setupUseReducer } from "../../creators/setupReducer";
-import { ACTION, ActionCreators, DISPLAY_NAME, Reducer } from "../../types";
-import { resolveDisplayName } from "../../utils";
+import {
+  ACTION,
+  ActionCreators,
+  CreateBindedActions,
+  DISPLAY_NAME,
+  Reducer,
+} from "../../types";
+import { ResolveDisplayName, resolveDisplayName } from "../../utils";
 
 // TODO: const store = createStore(rootReducer)
 // https://redux.js.org/usage/configuring-your-store
@@ -16,10 +22,22 @@ export const create = <
   reducer: Reducer<S, A>,
   actionCreators: AC,
   displayName?: DN
-) => {
-  // ): {
-  //   [K in `use${ResolveDisplayName<DN>}State`]: any;
-  // } => {
+): //  {
+//   [K in `${DN}Provider`]: React.FC<{ initState: S; children: React.ReactNode }>
+// } &
+{
+  [K in `use${ResolveDisplayName<DN>}State`]: () => S;
+} & {
+  [K in `use${ResolveDisplayName<DN>}Actions`]: () => CreateBindedActions<AC>;
+} & {
+  [K in `${ResolveDisplayName<DN>}Provider`]: React.FC<{
+    initState: S;
+    children: React.ReactNode;
+  }>;
+} => {
+  // [K in `use${DN}State`]: () => S;
+  // [K in `use${DN}Actions`]: () => CreateBindedActions<AC>;
+
   const dn = resolveDisplayName(displayName);
 
   const {
@@ -56,9 +74,17 @@ export const create = <
     [providerKey]: MainProvider,
     [stateKey]: useContextState,
     [actionsKey]: useContextActions,
+  } as {
+    [K in `use${ResolveDisplayName<DN>}State`]: () => S;
+  } & {
+    [K in `use${ResolveDisplayName<DN>}Actions`]: () => CreateBindedActions<AC>;
+  } & {
+    [K in `${ResolveDisplayName<DN>}Provider`]: React.FC<{
+      initState: S;
+      children: React.ReactNode;
+    }>;
   };
 };
 
-// const x = create(testReducer, testActions, "XXX");
-
+// const xxx = create(testReducer, testActions);
 // const z = x.useContextActions();
