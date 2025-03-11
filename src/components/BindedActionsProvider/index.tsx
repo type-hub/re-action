@@ -3,7 +3,7 @@ import React from "react";
 import { setupUseReducer } from "../../creators/setupReducer";
 import { testActions, testReducer } from "../../data";
 import { ACTION, ActionCreators, DISPLAY_NAME, Reducer } from "../../types";
-import { ResolveDisplayName, resolveDisplayName } from "../../utils";
+import { resolveDisplayName } from "../../utils";
 
 // TODO: const store = createStore(rootReducer)
 // https://redux.js.org/usage/configuring-your-store
@@ -17,9 +17,10 @@ export const create = <
   reducer: Reducer<S, A>,
   actionCreators: AC,
   displayName?: DN
-): {
-  [K in `use${ResolveDisplayName<DN>}State`]: any;
-} => {
+) => {
+  // ): {
+  //   [K in `use${ResolveDisplayName<DN>}State`]: any;
+  // } => {
   const dn = resolveDisplayName(displayName);
 
   const {
@@ -61,4 +62,4 @@ export const create = <
 
 const x = create(testReducer, testActions, "XXX");
 
-const z = x.useContextActions();
+// const z = x.useContextActions();
