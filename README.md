@@ -1,4 +1,8 @@
-# re-action
+<h1 align="center">re-action</h1>
+
+<p align="center">
+**re-action** provides a structured way to work with useReducer by offering a collection of hooks, utilities, and component creators. It streamlines action binding, context management, and reducer setup, making state management more intuitive and scalable.
+</p>
 
 ## Docs
 
