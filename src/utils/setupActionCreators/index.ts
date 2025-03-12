@@ -27,24 +27,14 @@ export const setupActionsCreators = <FL extends FUNC_LOOKUP>(
 
 // --- TESTS --------------------------------------------------------
 
-const id = <T>(value: T): T => value;
+// const id = <T>(value: T): T => value;
 
-const x = setupActionsCreators({
-  a: id,
-  // VID: pre typed generic functions
-  aa: id<string>,
-  b: (a: number) => `a-${a}`,
-  // b: <T extends number>(a: T): `a-${T}` => `a-${a}`,
-  c: () => ({ a: 1 as const }),
-  // ramda chain
-});
-
-const f = x.aa("1");
-//    ^?
-const g = x.b(2);
-//    ^?
-const e = x.b(1);
-//    ^?
-
-const h = x.c();
-//    ^?
+// const x = setupActionsCreators({
+//   a: id,
+//   // VID: pre typed generic functions
+//   aa: id<string>,
+//   b: (a: number) => `a-${a}`,
+//   // b: <T extends number>(a: T): `a-${T}` => `a-${a}`,
+//   c: () => ({ a: 1 as const }),
+//   // ramda chain
+// });

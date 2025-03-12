@@ -146,6 +146,17 @@ const reducer = (state: State, action: Actions): State => {
 
 ## Utils
 
+### `setupActionsCreators()`
+
+```ts
+export const actionCreators = setupActionsCreators({
+  increment: (amount: number) => amount,
+  decrement: (amount: number) => amount,
+});
+```
+
+This function **generates action creators** from a given **lookup object** containing functions. It iterates over the keys of the provided function lookup, wrapping each function to create a standardized action object containing a type derived from the key and a payload produced by invoking the corresponding function. This approach ensures type safety by inferring input parameters and return types, making it easier to define consistent and predictable action creators for state management in a functional and type-driven way.
+
 ### `contextFactory()`
 
 ```ts
