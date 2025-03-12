@@ -52,7 +52,7 @@ ActionCreator
 
 ActionCreator
 
-````ts
+```ts
 Record<string, (payload: any) => { type: string; payload: any }>;
 ```
 
@@ -76,7 +76,7 @@ Record<string, (payload: any) => { type: string; payload: any }>;
 
 ```ts
 const bindedActions = useBindedActions(dispatch, actionsCreators);
-````
+```
 
 **useBindedActions** is a React hook that binds action creators to a **dispatch** function, ensuring actions are dispatched directly when called. It memoizes the bound actions to maintain reference stability and prevent unnecessary re-renders. By dynamically mapping action creators to **dispatch**, it simplifies state management in a Redux-like setup.
 
