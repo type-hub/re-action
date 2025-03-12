@@ -2,6 +2,38 @@
 
 ## Docs
 
+### Hooks
+
+#### useBindedActions
+
+useBindedActions is a React hook that binds action creators to a dispatch function, ensuring actions are dispatched directly when called. It memoizes the bound actions to maintain reference stability and prevent unnecessary re-renders. By dynamically mapping action creators to dispatch, it simplifies state management in a Redux-like setup.
+
+#### useBindedReducer
+
+useBindedReducer is a React hook that combines useReducer with useBindedActions, providing a stateful reducer along with action creators that are automatically bound to dispatch. It ensures that actions are dispatched seamlessly when called, simplifying state updates while maintaining reference stability. The hook returns the current state, the bound action creators, and the raw dispatch function for flexibility.
+
+### Setup
+
+#### setupUseActions
+
+setupActions is a utility that creates a context-based action binding system, generating a named action context and a hook for accessing bound action creators. It resolves an optional display name to provide a context-aware API, ensuring actions are consistently dispatched within the application. The returned object includes a React context for actions and a dynamically named hook (use[DisplayName]Actions) for binding actions to a given dispatch function.
+
+#### setupUseReducer
+
+setupUseReducer is a utility that generates a named reducer context, along with state and action contexts, enabling structured state management. It creates a dynamically named hook (use[DisplayName]Reducer) that initializes a reducer with bound actions while also exposing separate contexts for state and actions. This ensures encapsulated, context-aware state management within a React application.
+
+### Component Creators
+
+#### createStore
+
+create is a utility that sets up a fully encapsulated state management system using React context and a reducer. It dynamically generates a provider component ([DisplayName]Provider) to manage state and actions, along with hooks (use[DisplayName]State and use[DisplayName]Actions) for accessing them. This allows for a structured and reusable approach to managing state across a React application.
+
+### Type Utils
+
+#### GetActionTypes
+
+GetActionTypes extracts the union of all possible action objects returned by an action creators object. It iterates over each key in AC, retrieves the return type of the corresponding function, and combines them into a single union type. This allows for precise typing of actions dispatched in a reducer.
+
 ### Setup
 
 ```ts

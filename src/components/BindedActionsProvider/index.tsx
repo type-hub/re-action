@@ -10,9 +10,7 @@ import {
 } from "../../types";
 import { ResolveDisplayName, resolveDisplayName } from "../../utils";
 
-// TODO: const store = createStore(rootReducer)
 // https://redux.js.org/usage/configuring-your-store
-// use reduce as a single source of truth
 export const create = <
   S,
   A extends ACTION,
@@ -22,10 +20,7 @@ export const create = <
   reducer: Reducer<S, A>,
   actionCreators: AC,
   displayName?: DN
-): //  {
-//   [K in `${DN}Provider`]: React.FC<{ initState: S; children: React.ReactNode }>
-// } &
-{
+): {
   [K in `use${ResolveDisplayName<DN>}State`]: () => S;
 } & {
   [K in `use${ResolveDisplayName<DN>}Actions`]: () => CreateBindedActions<AC>;
@@ -35,9 +30,6 @@ export const create = <
     children: React.ReactNode;
   }>;
 } => {
-  // [K in `use${DN}State`]: () => S;
-  // [K in `use${DN}Actions`]: () => CreateBindedActions<AC>;
-
   const dn = resolveDisplayName(displayName);
 
   const {
