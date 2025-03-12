@@ -54,7 +54,7 @@ ActionCreator
 
 ````ts
 Record<string, (payload: any) => { type: string; payload: any }>;
-```contextFactory
+```
 
 ## Sandbox examples
 
@@ -146,7 +146,7 @@ const reducer = (state: State, action: Actions): State => {
 
 ## Utils
 
-### contextFactory()
+### `contextFactory()`
 
 ```ts
 const contextName = "Test";
