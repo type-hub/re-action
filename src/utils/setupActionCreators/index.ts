@@ -5,16 +5,13 @@ import {
 } from "../../types";
 import { getKeys } from "../getKeys";
 
-// TODO: js docs?
-
-const setupActionsCreators = <FL extends FUNC_LOOKUP>(
+export const setupActionsCreators = <FL extends FUNC_LOOKUP>(
   funcLookup: FL
 ): CreateActionCreatorsFromFnLookUp<FL> => {
   const _keys = getKeys(funcLookup);
 
   return _keys.reduce((acc, key) => {
     acc[key] = <
-      //
       In extends Parameters<FL[typeof key]>,
       Out extends ReturnType<FL[typeof key]>
     >(
@@ -31,8 +28,6 @@ const setupActionsCreators = <FL extends FUNC_LOOKUP>(
 // --- TESTS --------------------------------------------------------
 
 const id = <T>(value: T): T => value;
-
-// TODO: rethink, action should build payload (use ramda chains)
 
 const x = setupActionsCreators({
   a: id,

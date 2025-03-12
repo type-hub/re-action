@@ -1,4 +1,3 @@
-// KILL
 import { useReducer } from "react";
 import {
   ACTION,
@@ -29,9 +28,6 @@ export const useBindedReducer = <
   actionsCreators: AC,
   initialState: S
 ): [S, CreateBindedActions<AC>, Dispatch<A>] => {
-  // ) => {
-  // ): CreateBindedReducer<Reducer, AC, State> => {
-  // TODO: support init func
   const [state, dispatch] = useReducer(reducer, initialState);
   const bindedActions = useBindedActions(
     dispatch as unknown as Dispatch<ACTION>,
@@ -39,11 +35,5 @@ export const useBindedReducer = <
   );
 
   // INFO: dispatch is here due to incremental refactor usage
-  // TODO: why array?
   return [state, bindedActions, dispatch];
 };
-
-//
-
-// const [state, bindedActions, dispatch] = useBindedReducer(testReducer, testActions, testInitState);
-// const zzzzzz = useBindedReducer(testReducer, testActions, testInitState);
