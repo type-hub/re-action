@@ -1,61 +1,61 @@
 // ==== General =============================================================
 
-export type FUNC = (...args: any[]) => any;
-export type FUNC_LOOKUP = Record<string, FUNC>;
+export type FUNC = (...args: any[]) => any
+export type FUNC_LOOKUP = Record<string, FUNC>
 
 // ==== Actions ============================================================
 
-export type ACTION = { payload: any; type: string };
+export type ACTION = { payload: any; type: string }
 export type CreateAction<Payload, Type extends string> = {
-  payload: Payload;
-  type: Type;
-};
+  payload: Payload
+  type: Type
+}
 
-type ActionCreator<A extends ACTION> = (...args: any[]) => A;
+type ActionCreator<A extends ACTION> = (...args: any[]) => A
 
 export type ActionCreators<A extends ACTION> = Readonly<
   Record<string, ActionCreator<A>>
->;
+>
 
 type CreateActionCreatorFromFn<
   //
   Fn extends FUNC,
-  Type extends string
+  Type extends string,
 > = <Args extends Parameters<Fn>>(
   ...args: Args
-) => CreateAction<ReturnType<Fn>, Type>;
+) => CreateAction<ReturnType<Fn>, Type>
 
 export type CreateActionCreatorsFromFnLookUp<Obj extends FUNC_LOOKUP> = {
-  [K in keyof Obj]: CreateActionCreatorFromFn<Obj[K], K & string>;
-};
+  [K in keyof Obj]: CreateActionCreatorFromFn<Obj[K], K & string>
+}
 
 // ==== Binded Actions ========================================================
 
 export type CreateBindedActions<AC extends ActionCreators<ACTION>> = {
-  [K in keyof AC]: (...args: Parameters<AC[K]>) => void;
-};
+  [K in keyof AC]: (...args: Parameters<AC[K]>) => void
+}
 
 // ==== DisplayName ===========================================================
 
-export type DISPLAY_NAME = string;
+export type DISPLAY_NAME = string
 
 // ==== Reducer ================================================================
 
-export type Reducer<S, A extends ACTION> = (prevState: S, action: A) => S;
+export type Reducer<S, A extends ACTION> = (prevState: S, action: A) => S
 
 //TODO: what is this?
-type SuperGenericReducerSTRANGE = <S, A extends ACTION>(s: S, a: A) => S;
+type SuperGenericReducerSTRANGE = <S, A extends ACTION>(s: S, a: A) => S
 
 // ==== Dispatch ================================================================
 
-export type Dispatch<A extends ACTION> = (action: A) => void;
+export type Dispatch<A extends ACTION> = (action: A) => void
 
 export type CreateActionDispatch<AC extends ActionCreators<ACTION>> = (
-  action: GetActionTypes<AC>
-) => void;
+  action: GetActionTypes<AC>,
+) => void
 
 // ==== Public Utils =============================================================
 
-export type GetActionTypes<AC extends ActionCreators<ACTION>> = {
-  [K in keyof AC]: ReturnType<AC[K]>;
-}[keyof AC];
+export type GetActionTypes<AC extends ActionCreators<ACTION>> = ReturnType<
+  AC[keyof AC]
+>

@@ -1,1 +1,1 @@
-export * from "./BindedActionsProvider";
+export * from "./BindedActionsProvider"

@@ -1,5 +1,5 @@
 export function getKeys<T extends Record<string, any>>(
-  o: T
+  o: T,
 ): (keyof T & string)[] {
-  return Object.keys(o);
+  return Object.keys(o)
 }

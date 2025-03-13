@@ -1,2 +1,2 @@
-export * from "./useBindedActions";
-export * from "./useBindedReducer";
+export * from "./useBindedActions"
+export * from "./useBindedReducer"

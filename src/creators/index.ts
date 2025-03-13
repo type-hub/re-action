@@ -1,2 +1,2 @@
-export * from "./setupActions";
-export * from "./setupReducer";
+export * from "./setupActions"
+export * from "./setupReducer"
