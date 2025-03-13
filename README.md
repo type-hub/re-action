@@ -10,6 +10,7 @@ xyz
 
 ## Benefits
 
+- small size: > 10kb
 - simple useReducer
 - no more dispatch
 - helps with gradual refactors
@@ -53,7 +54,7 @@ ActionCreator
 ActionCreator
 
 ```ts
-Record<string, (payload: any) => { type: string; payload: any }>;
+Record<string, (payload: any) => { type: string; payload: any }>
 ```
 
 ## Sandbox examples
@@ -75,7 +76,7 @@ Record<string, (payload: any) => { type: string; payload: any }>;
 ### `useBindedActions()`
 
 ```ts
-const bindedActions = useBindedActions(dispatch, actionsCreators);
+const bindedActions = useBindedActions(dispatch, actionsCreators)
 ```
 
 **useBindedActions** is a React hook that binds action creators to a **dispatch** function, ensuring actions are dispatched directly when called. It memoizes the bound actions to maintain reference stability and prevent unnecessary re-renders. By dynamically mapping action creators to **dispatch**, it simplifies state management in a Redux-like setup.
@@ -83,7 +84,7 @@ const bindedActions = useBindedActions(dispatch, actionsCreators);
 ### `useBindedReducer()`
 
 ```ts
-const bindedActions = useBindedReducer(reducer, actionsCreators, initState);
+const bindedActions = useBindedReducer(reducer, actionsCreators, initState)
 ```
 
 **useBindedReducer** is a React hook that combines **useReducer** with **useBindedActions**, providing a stateful reducer along with action creators that are automatically bound to **dispatch**. It ensures that actions are dispatched seamlessly when called, simplifying state updates while maintaining reference stability. The hook returns the current **state**, the **bound action creators**, and the **raw dispatch** function for flexibility.
@@ -95,8 +96,8 @@ const bindedActions = useBindedReducer(reducer, actionsCreators, initState);
 ```ts
 const { TestProvider, useTest, useTestActions } = setupUseActions(
   actionsCreators,
-  "Name"
-);
+  "Name",
+)
 ```
 
 **setupActions** is a utility that creates a context-based action binding system, generating a **named action context** and a **hook** for accessing bound action creators. It resolves an optional display name to provide a context-aware API, ensuring actions are consistently dispatched within the application. The returned object includes a React **context for actions** and a **dynamically named hook** (use[DisplayName]Actions) for **binding actions** to a given **dispatch** function.
@@ -110,7 +111,7 @@ const {
   useTestActions,
   useTestReducer,
   useTestState,
-} = setupUseReducer(reducer, actionCreators, "Test");
+} = setupUseReducer(reducer, actionCreators, "Test")
 ```
 
 **setupUseReducer** is a utility that generates a **named reducer context**, along with **state** and **action contexts**, enabling structured state management. It creates a dynamically named hook (use[DisplayName]Reducer) that initializes a reducer with bound actions while also exposing separate contexts for state and actions. This ensures encapsulated, context-aware state management within a React application.
@@ -123,8 +124,8 @@ const {
 const { TestProvider, useTestState, useTestActions } = create(
   reducer,
   actionCreators,
-  "Test"
-);
+  "Test",
+)
 ```
 
 **create** is a utility that sets up a fully encapsulated state management system using React context and a reducer. It dynamically generates a **provider component** ([DisplayName]Provider) to manage state and actions, along with **hooks** (use[DisplayName]State and use[DisplayName]Actions) for accessing them. This allows for a structured and reusable approach to managing state across a React application.
@@ -134,12 +135,12 @@ const { TestProvider, useTestState, useTestActions } = create(
 ### `GetActionTypes<>`
 
 ```ts
-type Actions = GetActionTypes<typeof actionCreators>;
+type Actions = GetActionTypes<typeof actionCreators>
 
 const reducer = (state: State, action: Actions): State => {
   /* ... */
-  return state;
-};
+  return state
+}
 ```
 
 **GetActionTypes** extracts the **union** of all possible **action objects** returned by an action creators object. It iterates over each key in AC, retrieves the return type of the corresponding function, and combines them into a single union type. ThicontextFactory
@@ -152,7 +153,7 @@ const reducer = (state: State, action: Actions): State => {
 export const actionCreators = setupActionsCreators({
   increment: (amount: number) => amount,
   decrement: (amount: number) => amount,
-});
+})
 ```
 
 This function **generates action creators** from a given **lookup object** containing functions. It iterates over the keys of the provided function lookup, wrapping each function to create a standardized action object containing a type derived from the key and a payload produced by invoking the corresponding function. This approach ensures type safety by inferring input parameters and return types, making it easier to define consistent and predictable action creators for state management in a functional and type-driven way.
@@ -160,8 +161,8 @@ This function **generates action creators** from a given **lookup object** conta
 ### `contextFactory()`
 
 ```ts
-const contextName = "Test";
-const a = contextFactory<State, typeof contextName>(contextName);
+const contextName = "Test"
+const a = contextFactory<State, typeof contextName>(contextName)
 ```
 
 This utility function creates a strongly-typed React context factory, generating a **custom provider** and a **corresponding hook** for accessing the context value. It ensures that consumers of the hook cannot access the context outside of its provider, throwing an error if misused. The provider is wrapped in React.memo to optimize re-renders, and both the **provider and hook names** are **dynamically derived** from an optional **display name**. This approach simplifies context creation by enforcing type safety and reducing boilerplate when managing shared state in a React application.
