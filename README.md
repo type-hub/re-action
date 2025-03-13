@@ -94,13 +94,13 @@ const bindedActions = useBindedReducer(reducer, actionsCreators, initState)
 ### `setupUseActions()`
 
 ```ts
-const { TestProvider, useTest, useTestActions } = setupUseActions(
+const { TestProvider, useTest, useTestBindedActions } = setupUseActions(
   actionsCreators,
   "Name",
 )
 ```
 
-**setupActions** is a utility that creates a context-based action binding system, generating a **named action context** and a **hook** for accessing bound action creators. It resolves an optional display name to provide a context-aware API, ensuring actions are consistently dispatched within the application. The returned object includes a React **context for actions** and a **dynamically named hook** (use[DisplayName]Actions) for **binding actions** to a given **dispatch** function.
+**setupActions** is a utility that creates a context-based action binding system, generating a **named action context** and a **hook** for accessing bound action creators. It resolves an optional display name to provide a context-aware API, ensuring actions are consistently dispatched within the application. The returned object includes a React **context for actions** and a **dynamically named hook** (use[DisplayName]BindedActions) for **binding actions** to a given **dispatch** function.
 
 ### `setupUseReducer()`
 
