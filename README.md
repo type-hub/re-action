@@ -4,28 +4,34 @@
 <b>re-action</b> provides a structured way to work with useReducer by offering a collection of hooks, utilities, and component creators. It streamlines action binding, context management, and reducer setup, making state management more intuitive and scalable.
 </p>
 
-## Motivation
+## 💡 Motivation
 
-xyz
+In modern React development, managing complex state has become increasingly challenging. While the useReducer Hook offers a way to handle state logic, developers often encounter several pain points:
 
-## Benefits
+- **Verbose Syntax**: Manually dispatching actions can lead to boilerplate code, making components harder to read and maintain.
+- **Scalability Issues**: As applications grow, setting up and managing reducers and contexts can become cumbersome, hindering scalability.
+- **TypeScript Integration**: Ensuring type safety with useReducer requires additional effort, which can be error-prone and time-consuming.
 
-- small size: > 10kb
-- simple useReducer
-- no more dispatch
-- helps with gradual refactors
-- TS ready
-- optimized everything
+Recognizing these challenges, re-action was developed to streamline state management in React applications. By offering a suite of hooks, utilities, and component creators, it simplifies action binding, context management, and reducer setup. This not only reduces boilerplate but also enhances code readability and maintainability, allowing developers to focus on building features rather than managing state intricacies.
 
-## Installation
+## 🚀 Benefits
 
-Via npm
+- Small Size: Less than 10KB
+- Simplified `useReducer`: Cleaner syntax for state management
+- No More Dispatch Calls: Reduces boilerplate code
+- Gradual Refactoring Support: Eases transitions in legacy code
+- TypeScript Ready: Built-in TypeScript support
+- Optimized Everything: Performance-optimized for efficiency
+
+## 📦 Installation
+
+Via npm:
 
 ```sh
 npm install @type-hub/re-action
 ```
 
-# Documentation
+## 📚 Documentation
 
 - [Sandbox examples](#sandbox-examples)
 - [API Reference](#api-reference)
@@ -37,41 +43,33 @@ npm install @type-hub/re-action
   - [`GetActionTypes`](#GetActionTypes)
   - [`contextFactory`](#contextFactory)
 
-## Vocabulary
+## 📚 Vocabulary
 
-Action
-
+**Action**
 ```ts
- { type: string, payload: any}
+{ type: string, payload: any }
 ```
 
-ActionCreator
-
+**ActionCreator**
 ```ts
-(payload: any) => { type: string, payload: any}
+(payload: any) => { type: string, payload: any }
 ```
 
-ActionCreator
-
+**ActionCreators**
 ```ts
 Record<string, (payload: any) => { type: string; payload: any }>
 ```
 
-## Sandbox examples
+## 🛠 Sandbox Examples
 
 - [useBindedActions](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageE.tsx)
-
 - [useBindedReducer](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageE.tsx)
-
 - [setupUseActions](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageE.tsx)
-
 - [setupUseReducer](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageE.tsx)
-
 - [createStore](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageE.tsx)
-
 - [GetActionTypes](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageE.tsx)
 
-## Hooks
+## ⚡ Hooks
 
 ### `useBindedActions()`
 
@@ -89,7 +87,7 @@ const bindedActions = useBindedReducer(reducer, actionsCreators, initState)
 
 **useBindedReducer** is a React hook that combines **useReducer** with **useBindedActions**, providing a stateful reducer along with action creators that are automatically bound to **dispatch**. It ensures that actions are dispatched seamlessly when called, simplifying state updates while maintaining reference stability. The hook returns the current **state**, the **bound action creators**, and the **raw dispatch** function for flexibility.
 
-## Setup
+## 🎯 Setup
 
 ### `setupUseActions()`
 
@@ -111,12 +109,12 @@ const {
   useTestActions,
   useTestReducer,
   useTestState,
-} = setupUseReducer(reducer, actionCreators, "Test")
+} = setupUseReducer(reducer, actionCreators, "DisplayName)
 ```
 
 **setupUseReducer** is a utility that generates a **named reducer context**, along with **state** and **action contexts**, enabling structured state management. It creates a dynamically named hook (use[DisplayName]Reducer) that initializes a reducer with bound actions while also exposing separate contexts for state and actions. This ensures encapsulated, context-aware state management within a React application.
 
-## Component Creators
+## 🎨 Component Creators
 
 ### `createStore()`
 
@@ -124,13 +122,13 @@ const {
 const { TestProvider, useTestState, useTestActions } = create(
   reducer,
   actionCreators,
-  "Test",
+  "DisplayName,
 )
 ```
 
 **create** is a utility that sets up a fully encapsulated state management system using React context and a reducer. It dynamically generates a **provider component** ([DisplayName]Provider) to manage state and actions, along with **hooks** (use[DisplayName]State and use[DisplayName]Actions) for accessing them. This allows for a structured and reusable approach to managing state across a React application.
 
-## Type Utils
+## 🔍 Type Utils
 
 ### `GetActionTypes<>`
 
@@ -143,9 +141,9 @@ const reducer = (state: State, action: Actions): State => {
 }
 ```
 
-**GetActionTypes** extracts the **union** of all possible **action objects** returned by an action creators object. It iterates over each key in AC, retrieves the return type of the corresponding function, and combines them into a single union type. ThicontextFactory
+**GetActionTypes** extracts the **union** of all possible **action objects** returned by an action creators object. It iterates over each key in AC, retrieves the return type of the corresponding function, and combines them into a single union type.
 
-## Utils
+## 🛠 Utils
 
 ### `setupActionsCreators()`
 
@@ -161,7 +159,7 @@ This function **generates action creators** from a given **lookup object** conta
 ### `contextFactory()`
 
 ```ts
-const contextName = "Test"
+const contextName = "DisplayName
 const a = contextFactory<State, typeof contextName>(contextName)
 ```
 
