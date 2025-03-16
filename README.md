@@ -48,20 +48,29 @@ npm install @type-hub/re-action
 **Action**
 
 ```ts
-{ type: string, payload: any }
+type ACTION = { type: string; payload: any }
 ```
+
+An object representing a state change request in useReducer. It consists of a type field (a string identifier) and an optional payload containing additional data.
 
 **ActionCreator**
 
 ```ts
-(payload: any) => { type: string, payload: any }
+type ActionCreator<Payload> = (payload: Payload) => {
+  type: string
+  payload: Payload
+}
 ```
+
+A function that generates an Action object. It takes a payload as an argument and returns an object with a predefined type and the provided payload. This helps streamline action creation and reduces boilerplate.
 
 **ActionCreators**
 
 ```ts
-Record<string, (payload: any) => { type: string; payload: any }>
+type ActionCreators = Record<string, ActionCreator<any>>
 ```
+
+An object mapping action names (strings) to ActionCreator functions. This provides a structured way to define multiple action creators in a single place, making it easier to dispatch actions without manually constructing them.
 
 ## 🛠 Sandbox Examples
 
@@ -70,7 +79,8 @@ Record<string, (payload: any) => { type: string; payload: any }>
 - [setupUseActions](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageC.tsx)
 - [setupUseReducer](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageD.tsx)
 - [createStore](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageE.tsx)
-- [GetActionTypes](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?file=src%2Fstore%2Factions.ts)
+- [setupActionsCreators](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?file=src%2Fstore%2Factions.ts)
+- [GetActionTypes](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?file=src%2Fstore%2Freducer.ts)
 
 ## ⚡ Hooks
 
