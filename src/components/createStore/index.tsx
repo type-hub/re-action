@@ -10,7 +10,7 @@ import {
 } from "../../types"
 import { ResolveDisplayName, resolveDisplayName } from "../../utils"
 
-export const create = <
+export const createStore = <
   S,
   A extends ACTION,
   AC extends ActionCreators<A>,

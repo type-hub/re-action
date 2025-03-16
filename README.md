@@ -46,28 +46,31 @@ npm install @type-hub/re-action
 ## 📚 Vocabulary
 
 **Action**
+
 ```ts
 { type: string, payload: any }
 ```
 
 **ActionCreator**
+
 ```ts
 (payload: any) => { type: string, payload: any }
 ```
 
 **ActionCreators**
+
 ```ts
 Record<string, (payload: any) => { type: string; payload: any }>
 ```
 
 ## 🛠 Sandbox Examples
 
-- [useBindedActions](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageE.tsx)
-- [useBindedReducer](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageE.tsx)
-- [setupUseActions](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageE.tsx)
-- [setupUseReducer](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageE.tsx)
+- [useBindedActions](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageA.tsx)
+- [useBindedReducer](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageB.tsx)
+- [setupUseActions](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageC.tsx)
+- [setupUseReducer](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageD.tsx)
 - [createStore](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageE.tsx)
-- [GetActionTypes](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageE.tsx)
+- [GetActionTypes](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?file=src%2Fstore%2Factions.ts)
 
 ## ⚡ Hooks
 
