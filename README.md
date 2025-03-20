@@ -33,8 +33,9 @@ npm install @type-hub/re-action
 
 ## 📚 Documentation
 
-- [Sandbox examples](#-sandbox-examples)
-- [API Reference](#api-reference)
+- [📚 Vocabulary](#-vocabulary)
+- [🛠 Sandbox examples](#-sandbox-examples)
+- [📘 API Reference](#-api-reference)
   - [`useBindedActions`](#useBindedActions)
   - [`useBindedReducer`](#useBindedReducer)
   - [`setupUseActions`](#setupUseActions)
@@ -81,6 +82,8 @@ An object mapping action names (strings) to ActionCreator functions. This provid
 - [createStore](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageE.tsx)
 - [setupActionsCreators](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?file=src%2Fstore%2Factions.ts)
 - [GetActionTypes](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?file=src%2Fstore%2Freducer.ts)
+
+## 📘 API Reference
 
 ## ⚡ Hooks
 
