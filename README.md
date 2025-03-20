@@ -33,7 +33,7 @@ npm install @type-hub/re-action
 
 ## 📚 Documentation
 
-- [Sandbox examples](#sandbox-examples)
+- [Sandbox examples](#-sandbox-examples)
 - [API Reference](#api-reference)
   - [`useBindedActions`](#useBindedActions)
   - [`useBindedReducer`](#useBindedReducer)
