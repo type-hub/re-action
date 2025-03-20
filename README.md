@@ -25,8 +25,6 @@ Recognizing these challenges, re-action was developed to streamline state manage
 
 ## 📦 Installation
 
-Via npm:
-
 ```sh
 npm install @type-hub/re-action
 ```
@@ -36,13 +34,14 @@ npm install @type-hub/re-action
 - [📚 Vocabulary](#-vocabulary)
 - [🛠 Sandbox examples](#-sandbox-examples)
 - [📘 API Reference](#-api-reference)
-  - [`useBindedActions`](#useBindedActions)
-  - [`useBindedReducer`](#useBindedReducer)
-  - [`setupUseActions`](#setupUseActions)
-  - [`setupUseReducer`](#setupUseReducer)
-  - [`createStore`](#createStore)
-  - [`GetActionTypes`](#GetActionTypes)
-  - [`contextFactory`](#contextFactory)
+  - [🪝 useBindedActions](#useBindedActions)
+  - [🪝 useBindedReducer](#useBindedReducer)
+  - [🏗️ setupUseActions](#setupUseActions)
+  - [🏗️ setupUseReducer](#setupUseReducer)
+  - [🏭 createStore](#createStore)
+  - [🔧 setupActionsCreators](#setupActionsCreators)
+  - [🔧 contextFactory](#contextFactory)
+  - [🔍 GetActionTypes](#GetActionTypes)
 
 ## 📚 Vocabulary
 
@@ -75,17 +74,17 @@ An object mapping action names (strings) to ActionCreator functions. This provid
 
 ## 🛠 Sandbox Examples
 
-- [useBindedActions](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageA.tsx)
-- [useBindedReducer](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageB.tsx)
-- [setupUseActions](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageC.tsx)
-- [setupUseReducer](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageD.tsx)
-- [createStore](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageE.tsx)
-- [setupActionsCreators](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?file=src%2Fstore%2Factions.ts)
-- [GetActionTypes](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?file=src%2Fstore%2Freducer.ts)
+- [🪝 useBindedActions](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageA.tsx)
+- [🪝useBindedReducer](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageB.tsx)
+- [🏗️ setupUseActions](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageC.tsx)
+- [🏗️ setupUseReducer](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageD.tsx)
+- [🏭 createStore](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?embed=1&file=src%2Fpages%2FPageE.tsx)
+- [🔧 setupActionsCreators](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?file=src%2Fstore%2Factions.ts)
+- [🔍 GetActionTypes](https://stackblitz.com/edit/vitejs-vite-pbfaydmg?file=src%2Fstore%2Freducer.ts)
 
-## 📘 API Reference
+# 📘 API Reference
 
-## ⚡ Hooks
+## 🪝 Hooks
 
 ### `useBindedActions()`
 
@@ -103,7 +102,7 @@ const bindedActions = useBindedReducer(reducer, actionsCreators, initState)
 
 **useBindedReducer** is a React hook that combines **useReducer** with **useBindedActions**, providing a stateful reducer along with action creators that are automatically bound to **dispatch**. It ensures that actions are dispatched seamlessly when called, simplifying state updates while maintaining reference stability. The hook returns the current **state**, the **bound action creators**, and the **raw dispatch** function for flexibility.
 
-## 🎯 Setup
+## 🏗️ Setup
 
 ### `setupUseActions()`
 
@@ -130,7 +129,7 @@ const {
 
 **setupUseReducer** is a utility that generates a **named reducer context**, along with **state** and **action contexts**, enabling structured state management. It creates a dynamically named hook (use[DisplayName]Reducer) that initializes a reducer with bound actions while also exposing separate contexts for state and actions. This ensures encapsulated, context-aware state management within a React application.
 
-## 🎨 Component Creators
+## 🏭 Component Creators
 
 ### `createStore()`
 
@@ -144,22 +143,7 @@ const { TestProvider, useTestState, useTestActions } = create(
 
 **create** is a utility that sets up a fully encapsulated state management system using React context and a reducer. It dynamically generates a **provider component** ([DisplayName]Provider) to manage state and actions, along with **hooks** (use[DisplayName]State and use[DisplayName]Actions) for accessing them. This allows for a structured and reusable approach to managing state across a React application.
 
-## 🔍 Type Utils
-
-### `GetActionTypes<>`
-
-```ts
-type Actions = GetActionTypes<typeof actionCreators>
-
-const reducer = (state: State, action: Actions): State => {
-  /* ... */
-  return state
-}
-```
-
-**GetActionTypes** extracts the **union** of all possible **action objects** returned by an action creators object. It iterates over each key in AC, retrieves the return type of the corresponding function, and combines them into a single union type.
-
-## 🛠 Utils
+## 🔧 Utils
 
 ### `setupActionsCreators()`
 
@@ -180,3 +164,18 @@ const a = contextFactory<State, typeof contextName>(contextName)
 ```
 
 This utility function creates a strongly-typed React context factory, generating a **custom provider** and a **corresponding hook** for accessing the context value. It ensures that consumers of the hook cannot access the context outside of its provider, throwing an error if misused. The provider is wrapped in React.memo to optimize re-renders, and both the **provider and hook names** are **dynamically derived** from an optional **display name**. This approach simplifies context creation by enforcing type safety and reducing boilerplate when managing shared state in a React application.
+
+## 🔍 Type Utils
+
+### `GetActionTypes<>`
+
+```ts
+type Actions = GetActionTypes<typeof actionCreators>
+
+const reducer = (state: State, action: Actions): State => {
+  /* ... */
+  return state
+}
+```
+
+**GetActionTypes** extracts the **union** of all possible **action objects** returned by an action creators object. It iterates over each key in AC, retrieves the return type of the corresponding function, and combines them into a single union type.
