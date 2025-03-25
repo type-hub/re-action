@@ -3,6 +3,7 @@ import {
   ACTION,
   ActionCreators,
   CreateBindedActions,
+  DeadTypeAdapter,
   Dispatch,
 } from "../../types"
 import { getKeys } from "../../utils"
@@ -18,7 +19,7 @@ export const useBindedActions = <
     const _keys = getKeys(actionsCreators)
 
     return _keys.reduce((acc, k) => {
-      acc[k] = (...args: Parameters<AC[typeof k]>): void => {
+      acc[k] = (...args: DeadTypeAdapter<Parameters<AC[typeof k]>>): void => {
         const action = actionsCreators[k](...args)
         dispatch(action)
       }

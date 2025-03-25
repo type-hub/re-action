@@ -31,8 +31,12 @@ export type CreateActionCreatorsFromFnLookUp<Obj extends FUNC_LOOKUP> = {
 
 // ==== Binded Actions ========================================================
 
+export type DeadTypeAdapter<T> = T extends []
+  ? [DEAD_TYPE_PLACE_HOLDER?: any]
+  : T
+
 export type CreateBindedActions<AC extends ActionCreators<ACTION>> = {
-  [K in keyof AC]: (...args: Parameters<AC[K]>) => void
+  [K in keyof AC]: (...args: DeadTypeAdapter<Parameters<AC[K]>>) => void
 }
 
 // ==== DisplayName ===========================================================
