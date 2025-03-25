@@ -27,7 +27,7 @@ export const setupActionsCreators = <FL extends FUNC_LOOKUP>(
 
 // --- TESTS --------------------------------------------------------
 
-// const id = <T>(value: T): T => value;
+// const id = <T>(value: T): T => value
 
 // const x = setupActionsCreators({
 //   a: id,
@@ -37,4 +37,7 @@ export const setupActionsCreators = <FL extends FUNC_LOOKUP>(
 //   // b: <T extends number>(a: T): `a-${T}` => `a-${a}`,
 //   c: () => ({ a: 1 as const }),
 //   // ramda chain
-// });
+//   reset: () => {},
+// })
+
+// const z = x.reset()

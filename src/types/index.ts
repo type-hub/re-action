@@ -5,9 +5,9 @@ export type FUNC_LOOKUP = Record<string, FUNC>
 
 // ==== Actions ============================================================
 
-export type ACTION = { payload: any; type: string }
+export type ACTION = { payload?: any; type: string }
 export type CreateAction<Payload, Type extends string> = {
-  payload: Payload
+  payload?: Payload
   type: Type
 }
 
