@@ -1,6 +1,6 @@
 {
   "name": "@type-hub/re-action",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "useReducer() but better",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
