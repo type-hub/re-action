@@ -30,6 +30,17 @@ export const setupActionsCreators = <
     (acc, key) => {
       type ActionType = ResolvePrefix<typeof key, Prefix>
 
+      const resolveType = <P extends string | undefined, K extends string>(
+        prefix: P,
+        key: K,
+      ) => {
+        if (prefix) {
+          return `${prefix}/${key}`
+        }
+
+        return key
+      }
+
       function _actionCreator<
         In extends Parameters<FL[typeof key]>,
         Out extends ReturnType<FL[typeof key]>,
@@ -37,12 +48,12 @@ export const setupActionsCreators = <
         // TODO: resolve payload function
         if (payload.length === 0) {
           return {
-            payload: funcLookup[key](...payload),
-            type: `${prefix}/${key}`,
+            type: resolveType(prefix, key),
           } as CreateAction<ActionType, Out>
         } else {
           return {
-            type: `${prefix}/${key}`,
+            type: resolveType(prefix, key),
+            payload: funcLookup[key](...payload),
           } as CreateAction<ActionType, Out>
         }
       }
@@ -52,7 +63,7 @@ export const setupActionsCreators = <
       ): action is CreateAction<
         ResolvePrefix<typeof key, Prefix>,
         ReturnType<FL[typeof key]>
-      > => action.type === key
+      > => action.type === resolveType(prefix, key)
 
       acc[key] = _actionCreator
 
