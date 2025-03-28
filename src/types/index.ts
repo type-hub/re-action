@@ -1,15 +1,17 @@
 // ==== General =============================================================
 
+import { ResolvePrefix } from "../utils"
+
 export type FUNC = (...args: any[]) => any
 export type FUNC_LOOKUP = Record<string, FUNC>
 
 // ==== Actions ============================================================
 
-export type ACTION = { payload?: any; type: string }
-export type CreateAction<Payload, Type extends string> = {
-  payload?: Payload
-  type: Type
-}
+export type ACTION = { type: string; payload?: any }
+
+export type CreateAction<Type extends string, Payload> = void extends Payload
+  ? { type: Type }
+  : { type: Type; payload: Payload }
 
 type ActionCreator<A extends ACTION> = (...args: any[]) => A
 
@@ -17,16 +19,25 @@ export type ActionCreators<A extends ACTION> = Readonly<
   Record<string, ActionCreator<A>>
 >
 
-type CreateActionCreatorFromFn<
+export type CreateActionCreatorFromFn<
   //
-  Fn extends FUNC,
   Type extends string,
-> = <Args extends Parameters<Fn>>(
-  ...args: Args
-) => CreateAction<ReturnType<Fn>, Type>
+  Fn extends FUNC,
+> = ((
+  ...args: DeadTypeAdapter<Parameters<Fn>>
+) => CreateAction<Type, ReturnType<Fn>>) & {
+  match: (action: any) => action is CreateAction<Type, ReturnType<Fn>>
+}
 
-export type CreateActionCreatorsFromFnLookUp<Obj extends FUNC_LOOKUP> = {
-  [K in keyof Obj]: CreateActionCreatorFromFn<Obj[K], K & string>
+export type CreateActionCreatorsFromFnLookUp<
+  Obj extends FUNC_LOOKUP,
+  Prefix extends string,
+> = {
+  [K in keyof Obj]: CreateActionCreatorFromFn<
+    //
+    ResolvePrefix<K & string, Prefix>,
+    Obj[K]
+  >
 }
 
 // ==== Binded Actions ========================================================
@@ -54,9 +65,9 @@ type SuperGenericReducerSTRANGE = <S, A extends ACTION>(s: S, a: A) => S
 
 export type Dispatch<A extends ACTION> = (action: A) => void
 
-export type CreateActionDispatch<AC extends ActionCreators<ACTION>> = (
-  action: GetActionTypes<AC>,
-) => void
+export type CreateDispatchFromActionCreators<
+  AC extends ActionCreators<ACTION>,
+> = (action: GetActionTypes<AC>) => void
 
 // ==== Public Utils =============================================================
 

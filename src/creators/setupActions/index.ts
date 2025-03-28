@@ -2,8 +2,8 @@ import { useBindedActions } from "../../hooks"
 import {
   ACTION,
   ActionCreators,
-  CreateActionDispatch,
   CreateBindedActions,
+  CreateDispatchFromActionCreators,
   Dispatch,
   DISPLAY_NAME,
   GetActionTypes,
@@ -20,7 +20,7 @@ type SetupActions<
   DN extends DISPLAY_NAME | undefined,
 > = CreateContextFactory<CreateBindedActions<AC>, ResolveDisplayName<DN>> & {
   [K in `use${ResolveDisplayName<DN>}BindedActions`]: <
-    ActionsDispatch extends CreateActionDispatch<AC>,
+    ActionsDispatch extends CreateDispatchFromActionCreators<AC>,
   >(
     dispatch: ActionsDispatch,
   ) => CreateBindedActions<AC>
@@ -38,6 +38,7 @@ export const setupActions = <
   const actionsContext = contextFactory<CreateBindedActions<AC>, typeof dn>(dn)
 
   const useCurriedBindedActions = (dispatch: Dispatch<GetActionTypes<AC>>) =>
+    // TODO: possible error, to wide type
     useBindedActions(dispatch as unknown as Dispatch<ACTION>, actionCreators)
 
   // TODO: use[Test]Actions

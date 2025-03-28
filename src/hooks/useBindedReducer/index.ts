@@ -2,8 +2,8 @@ import { useReducer } from "react"
 import {
   ACTION,
   ActionCreators,
-  CreateActionDispatch,
   CreateBindedActions,
+  CreateDispatchFromActionCreators,
   Dispatch,
   Reducer,
 } from "../../types"
@@ -17,7 +17,7 @@ export type CreateBindedReducerFunc<
   reducer: Reducer<S, A>,
   actionsCreators: AC,
   initialState: S,
-) => [S, CreateBindedActions<AC>, CreateActionDispatch<AC>]
+) => [S, CreateBindedActions<AC>, CreateDispatchFromActionCreators<AC>]
 
 export const useBindedReducer = <
   S,
