@@ -152,15 +152,27 @@ export const actionCreators = setupActionsCreators({
   increment: (amount: number) => amount,
   decrement: (amount: number) => amount,
 })
+
+declare const testAction: any
+
+if (actionCreators.increment.match(testAction)) {
+  testAction // { type: "increment"; payload: number; }
+}
 ```
 
 This function **generates action creators** from a given **lookup object** containing functions. It iterates over the keys of the provided function lookup, wrapping each function to create a standardized action object containing a type derived from the key and a payload produced by invoking the corresponding function. This approach ensures type safety by inferring input parameters and return types, making it easier to define consistent and predictable action creators for state management in a functional and type-driven way.
 
+#### `.match()`
+
+Each generated **actionCreator** includes a **.match(action)** method, which checks whether the given action matches the type of actions created by that action creator.
+
 ### `contextFactory()`
 
 ```ts
-const contextName = "DisplayName
-const a = contextFactory<State, typeof contextName>(contextName)
+const contextName = "Test"
+const { TestProvider, useTest } = contextFactory<State, typeof contextName>(
+  contextName,
+)
 ```
 
 This utility function creates a strongly-typed React context factory, generating a **custom provider** and a **corresponding hook** for accessing the context value. It ensures that consumers of the hook cannot access the context outside of its provider, throwing an error if misused. The provider is wrapped in React.memo to optimize re-renders, and both the **provider and hook names** are **dynamically derived** from an optional **display name**. This approach simplifies context creation by enforcing type safety and reducing boilerplate when managing shared state in a React application.
