@@ -16,12 +16,12 @@ Recognizing these challenges, re-action was developed to streamline state manage
 
 ## 🚀 Benefits
 
-- Small Size: Less than 10KB
+- Small Size: just 1.5KB
+- Full TS support
+- No more dispatch calls, just actions
 - Simplified `useReducer`: Cleaner syntax for state management
-- No More Dispatch Calls: Reduces boilerplate code
+- Performance-optimized for efficiency
 - Gradual Refactoring Support: Eases transitions in legacy code
-- TypeScript Ready: Built-in TypeScript support
-- Optimized Everything: Performance-optimized for efficiency
 
 ## 📦 Installation
 
