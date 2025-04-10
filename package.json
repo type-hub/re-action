@@ -3,16 +3,18 @@
   "version": "1.0.25",
   "description": "useReducer() but better",
   "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "rm -rf ./dist && npm run build",
-    "build": "tsc",
-    "patchAndRelease": "npm run prepare && npm version patch && npm publish --access public && git push",
-    "publish:alpha": "npm run prepare && npm version prerelease --preid=alpha && npm publish --tag alpha && git push"
+    "build": "npm run build:tsup && npm run build:types",
+    "build:tsup": "tsup src/index.ts",
+    "build:types": "tsc --project tsconfig.d.json",
+    "patchAndRelease": "npm run build && npm version patch && npm publish --access public && git push",
+    "publish:alpha": "npm run build && npm version prerelease --preid=alpha && npm publish --tag alpha && git push"
   },
   "repository": {
     "type": "git",
@@ -42,6 +44,7 @@
     "@types/react": "^18.0.0",
     "prettier": "3.5.3",
     "react": "^18.0.0",
+    "tsup": "^8.4.0",
     "typescript": "^5.7.3"
   }
 }
