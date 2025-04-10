@@ -1,5 +1,3 @@
-export function getKeys<T extends Record<string, any>>(
-  o: T,
-): (keyof T & string)[] {
-  return Object.keys(o)
-}
+export const getKeys: <Obj extends Record<string, any>>(
+  o: Obj,
+) => (keyof Obj & string)[] = Object.keys

@@ -9,11 +9,8 @@ export type ResolveDisplayName<T> = [T] extends [string]
   : typeof ContextDisplayName
 
 export const resolveDisplayName = <DN extends DISPLAY_NAME | undefined>(
-  displayName: DN,
-): ResolveDisplayName<DN> => {
-  if (displayName) {
-    return displayName as ResolveDisplayName<DN>
-  } else {
-    return ContextDisplayName as ResolveDisplayName<DN>
-  }
-}
+  dn: DN,
+): ResolveDisplayName<DN> =>
+  dn
+    ? (dn as ResolveDisplayName<DN>)
+    : (ContextDisplayName as ResolveDisplayName<DN>)

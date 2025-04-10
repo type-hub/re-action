@@ -2,24 +2,23 @@ import { useReducer } from "react"
 import {
   ACTION,
   ActionCreators,
-  CreateBindedActions,
-  CreateDispatchFromActionCreators,
+  CreateBoundActions,
   Dispatch,
   Reducer,
 } from "../../types"
-import { useBindedActions } from "../useBindedActions"
+import { useBoundActions } from "../useBoundActions"
 
-export type CreateBindedReducerFunc<
-  S,
-  A extends ACTION,
-  AC extends ActionCreators<A>,
-> = (
-  reducer: Reducer<S, A>,
-  actionsCreators: AC,
-  initialState: S,
-) => [S, CreateBindedActions<AC>, CreateDispatchFromActionCreators<AC>]
+// export type CreateBindedReducerFunc<
+//   S,
+//   A extends ACTION,
+//   AC extends ActionCreators<A>,
+// > = (
+//   reducer: Reducer<S, A>,
+//   actionsCreators: AC,
+//   initialState: S,
+// ) => [S, CreateBoundActions<AC>, CreateDispatchFromActionCreators<AC>]
 
-export const useBindedReducer = <
+export const useBoundReducer = <
   S,
   A extends ACTION,
   AC extends ActionCreators<A>,
@@ -27,9 +26,9 @@ export const useBindedReducer = <
   reducer: Reducer<S, A>,
   actionsCreators: AC,
   initialState: S,
-): [S, CreateBindedActions<AC>, Dispatch<A>] => {
+): [S, CreateBoundActions<AC>, Dispatch<A>] => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const bindedActions = useBindedActions(
+  const bindedActions = useBoundActions(
     dispatch as unknown as Dispatch<ACTION>,
     actionsCreators,
   )

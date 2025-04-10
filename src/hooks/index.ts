@@ -1,2 +1,2 @@
-export * from "./useBindedActions"
-export * from "./useBindedReducer"
+export * from "./useBoundActions"
+export * from "./useBoundReducer"

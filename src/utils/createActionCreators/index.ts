@@ -17,29 +17,21 @@ export type ResolvePrefix<
       : `${Prefix}/${ActionType}`
     : ActionType
 
-export const setupActionsCreators = <
+export const createActionCreators = <
   FL extends FUNC_LOOKUP,
   Prefix extends string,
 >(
   funcLookup: FL,
   prefix?: Prefix,
-): CreateActionCreatorsFromFnLookUp<FL, Prefix> => {
-  const _keys = getKeys(funcLookup)
-
-  return _keys.reduce(
+): CreateActionCreatorsFromFnLookUp<FL, Prefix> =>
+  getKeys(funcLookup).reduce(
     (acc, key) => {
       type ActionType = ResolvePrefix<typeof key, Prefix>
 
       const resolveType = <P extends string | undefined, K extends string>(
         prefix: P,
         key: K,
-      ) => {
-        if (prefix) {
-          return `${prefix}/${key}`
-        }
-
-        return key
-      }
+      ) => (prefix ? `${prefix}/${key}` : key)
 
       function _actionCreator<
         In extends Parameters<FL[typeof key]>,
@@ -71,16 +63,15 @@ export const setupActionsCreators = <
     },
     {} as CreateActionCreatorsFromFnLookUp<FL, Prefix>,
   )
-}
 
 // --- TESTS --------------------------------------------------------
 
-// export const actionCreators = setupActionsCreators(
+// export const actionCreators = createActionCreators(
 //   {
 //     increment: (amount: number) => amount,
 //     decrement: (amount: number) => amount,
 //     optional: (newState?: string) => {},
-//     reset: (newState?: string) => {},
+//     reset: () => {},
 //   },
 //   "TEST" as const,
 // )
@@ -92,13 +83,13 @@ export const setupActionsCreators = <
 //   const x = testAction.payload
 // }
 
-// const z = actionCreators.reset()
+// const z = actionCreators.reset(1,2,3,4,5)
 
 // type State = { counter: number }
 
 // type actions = GetActionTypes<typeof actionCreators>
 
-// export const reducer = (
+// export const reducer = (setupActions
 //   state: State,
 //   action: GetActionTypes<typeof actionCreators>,
 // ): State => {

@@ -43,10 +43,10 @@ export type CreateActionCreatorsFromFnLookUp<
 // ==== Binded Actions ========================================================
 
 export type DeadTypeAdapter<T> = T extends []
-  ? [DEAD_TYPE_PLACE_HOLDER?: any]
+  ? [DEAD_TYPE_PLACE_HOLDER?: any, ...any[]]
   : T
 
-export type CreateBindedActions<AC extends ActionCreators<ACTION>> = {
+export type CreateBoundActions<AC extends ActionCreators<ACTION>> = {
   [K in keyof AC]: (...args: DeadTypeAdapter<Parameters<AC[K]>>) => void
 }
 

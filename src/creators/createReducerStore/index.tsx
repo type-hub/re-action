@@ -1,16 +1,16 @@
 import React from "react"
 
-import { setupUseReducer } from "../../creators/setupReducer"
 import {
   ACTION,
   ActionCreators,
-  CreateBindedActions,
+  CreateBoundActions,
   DISPLAY_NAME,
   Reducer,
 } from "../../types"
 import { ResolveDisplayName, resolveDisplayName } from "../../utils"
+import { createReducerContext } from "../createReducerContext"
 
-export const createStore = <
+export const createReducerStore = <
   S,
   A extends ACTION,
   AC extends ActionCreators<A>,
@@ -22,7 +22,7 @@ export const createStore = <
 ): {
   [K in `use${ResolveDisplayName<DN>}State`]: () => S
 } & {
-  [K in `use${ResolveDisplayName<DN>}Actions`]: () => CreateBindedActions<AC>
+  [K in `use${ResolveDisplayName<DN>}Actions`]: () => CreateBoundActions<AC>
 } & {
   [K in `${ResolveDisplayName<DN>}Provider`]: React.FC<{
     initState: S
@@ -34,11 +34,12 @@ export const createStore = <
   const {
     ContextStateProvider,
     ContextActionsProvider,
-    useContextReducer,
+    useContextBoundReducer,
     useContextState,
     useContextActions,
-  } = setupUseReducer(reducer, actionCreators)
+  } = createReducerContext(reducer, actionCreators)
 
+  // TODO: add DN
   const MainProvider = ({
     initState,
     children,
@@ -46,7 +47,7 @@ export const createStore = <
     initState: S
     children: React.ReactNode
   }) => {
-    const [state, bindedActions] = useContextReducer(initState)
+    const [state, bindedActions] = useContextBoundReducer(initState)
 
     return (
       <ContextStateProvider value={state}>
@@ -57,18 +58,14 @@ export const createStore = <
     )
   }
 
-  const providerKey: `${typeof dn}Provider` = `${dn}Provider`
-  const stateKey: `use${typeof dn}State` = `use${dn}State`
-  const actionsKey: `use${typeof dn}Actions` = `use${dn}Actions`
-
   return {
-    [providerKey]: MainProvider,
-    [stateKey]: useContextState,
-    [actionsKey]: useContextActions,
+    [`${dn}Provider`]: MainProvider,
+    [`use${dn}State`]: useContextState,
+    [`use${dn}Actions`]: useContextActions,
   } as {
     [K in `use${ResolveDisplayName<DN>}State`]: () => S
   } & {
-    [K in `use${ResolveDisplayName<DN>}Actions`]: () => CreateBindedActions<AC>
+    [K in `use${ResolveDisplayName<DN>}Actions`]: () => CreateBoundActions<AC>
   } & {
     [K in `${ResolveDisplayName<DN>}Provider`]: React.FC<{
       initState: S

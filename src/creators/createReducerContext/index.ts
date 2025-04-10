@@ -1,8 +1,9 @@
-import { CreateBindedReducerFunc, useBindedReducer } from "../../hooks"
+import { useBoundReducer } from "../../hooks"
 import {
   ACTION,
   ActionCreators,
-  CreateBindedActions,
+  CreateBoundActions,
+  CreateDispatchFromActionCreators,
   DISPLAY_NAME,
   Reducer,
 } from "../../types"
@@ -23,7 +24,7 @@ type ActionContext<
   AC extends ActionCreators<Actions>,
   DN extends string,
 > = CreateContextFactory<
-  CreateBindedActions<AC>,
+  CreateBoundActions<AC>,
   `${ResolveDisplayName<DN>}Actions`
 >
 
@@ -33,12 +34,13 @@ type HookContext<
   AC extends ActionCreators<Actions>,
   DN extends string,
 > = {
-  [K in `use${ResolveDisplayName<DN>}Reducer`]: (
+  [K in `use${ResolveDisplayName<DN>}BoundReducer`]: (
     initialState: State,
-  ) => ReturnType<CreateBindedReducerFunc<State, Actions, AC>>
+    // ) => ReturnType<CreateBindedReducerFunc<State, Actions, AC>>
+  ) => [State, CreateBoundActions<AC>, CreateDispatchFromActionCreators<AC>]
 }
 
-type SetupReducer<
+type CreateReducerContext<
   State,
   Actions extends ACTION,
   AC extends ActionCreators<Actions>,
@@ -47,7 +49,7 @@ type SetupReducer<
   ActionContext<Actions, AC, DN> &
   HookContext<State, Actions, AC, DN>
 
-export const setupUseReducer = <
+export const createReducerContext = <
   S,
   A extends ACTION,
   AC extends ActionCreators<A>,
@@ -56,7 +58,7 @@ export const setupUseReducer = <
   reducer: Reducer<S, A>,
   actionCreators: AC,
   displayName?: DN,
-): SetupReducer<S, A, AC, DN> => {
+): CreateReducerContext<S, A, AC, DN> => {
   const dn = resolveDisplayName(displayName)
 
   const stateDn: `${typeof dn}State` = `${dn}State`
@@ -64,18 +66,18 @@ export const setupUseReducer = <
 
   const actionDn: `${typeof dn}Actions` = `${dn}Actions`
   const actionsContext = contextFactory<
-    CreateBindedActions<AC>,
+    CreateBoundActions<AC>,
     typeof actionDn
   >(actionDn)
 
-  const useCurriedBindedReducer = (initialState: S) =>
-    useBindedReducer(reducer, actionCreators, initialState)
+  const useCurriedBoundReducer = (initialState: S) =>
+    useBoundReducer(reducer, actionCreators, initialState)
 
   return {
-    [`use${dn}Reducer`]: useCurriedBindedReducer,
+    [`use${dn}BoundReducer`]: useCurriedBoundReducer,
     ...stateContext,
     ...actionsContext,
-  } as SetupReducer<S, A, AC, DN>
+  } as CreateReducerContext<S, A, AC, DN>
 }
 
 // ------

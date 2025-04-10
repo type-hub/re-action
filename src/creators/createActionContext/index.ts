@@ -1,8 +1,8 @@
-import { useBindedActions } from "../../hooks"
+import { useBoundActions } from "../../hooks"
 import {
   ACTION,
   ActionCreators,
-  CreateBindedActions,
+  CreateBoundActions,
   CreateDispatchFromActionCreators,
   Dispatch,
   DISPLAY_NAME,
@@ -15,35 +15,35 @@ import {
   resolveDisplayName,
 } from "../../utils"
 
-type SetupActions<
+type CreateActionContext<
   AC extends ActionCreators<ACTION>,
   DN extends DISPLAY_NAME | undefined,
-> = CreateContextFactory<CreateBindedActions<AC>, ResolveDisplayName<DN>> & {
-  [K in `use${ResolveDisplayName<DN>}BindedActions`]: <
+> = CreateContextFactory<CreateBoundActions<AC>, ResolveDisplayName<DN>> & {
+  [K in `use${ResolveDisplayName<DN>}BoundActions`]: <
     ActionsDispatch extends CreateDispatchFromActionCreators<AC>,
   >(
     dispatch: ActionsDispatch,
-  ) => CreateBindedActions<AC>
+  ) => CreateBoundActions<AC>
 }
 
-export const setupActions = <
+export const createActionContext = <
   //
   AC extends ActionCreators<ACTION>,
   DN extends DISPLAY_NAME,
 >(
   actionCreators: AC,
   displayName?: DN,
-): SetupActions<AC, DN> => {
+): CreateActionContext<AC, DN> => {
   const dn = resolveDisplayName(displayName)
-  const actionsContext = contextFactory<CreateBindedActions<AC>, typeof dn>(dn)
+  const actionsContext = contextFactory<CreateBoundActions<AC>, typeof dn>(dn)
 
-  const useCurriedBindedActions = (dispatch: Dispatch<GetActionTypes<AC>>) =>
+  const useCurriedBoundActions = (dispatch: Dispatch<GetActionTypes<AC>>) =>
     // TODO: possible error, to wide type
-    useBindedActions(dispatch as unknown as Dispatch<ACTION>, actionCreators)
+    useBoundActions(dispatch as unknown as Dispatch<ACTION>, actionCreators)
 
   // TODO: use[Test]Actions
   return {
     ...actionsContext,
-    [`use${dn}BindedActions`]: useCurriedBindedActions,
-  } as SetupActions<AC, DN>
+    [`use${dn}BoundActions`]: useCurriedBoundActions,
+  } as CreateActionContext<AC, DN>
 }
